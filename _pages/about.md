@@ -1,10 +1,10 @@
 ---
 permalink: /
-title: "About Haodong"
+title: "About Minjae"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
-Haodong Ling (凌浩东) is a machine learning engineer at [TikTok](https://www.tiktok.com/about?lang=en). He got his Master's degree in Statistics at UC Berkeley in 2024. He received his Bachelor's degree in data science at Fudan University in 2023.
+Minjae Seo is currently a data labelling analyst  at [Handshake](https://joinhandshake.com/about/). He recently graduated from the University of California, Berkeley, with a Bachelor's degree in Statistics in December 2024.
