@@ -7,13 +7,13 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Haodong's homepage"
+title                    : "Minjae Seo"
 title_separator          : "-"
-name                     : &name "Haodong Ling"
-description              : &description "an undergraduate student in school of data science at Fudan University"
-url                      : https://milanmarks.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+name                     : &name "Minjae Seo"
+description              : &description "Recent graduate with Statistics major from the University of California, Berkeley"
+url                      : https://minjaeSeo6603.github.io # the base hostname & protocol for your site e.g. "https://minjaeSeo6603.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "milanmarks.github.io"
+repository               : "minjaeSeo6603.github.io"
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160
@@ -80,14 +80,14 @@ analytics:
 
 # Site Author
 author:
-  name             : "Haodong Ling"
+  name             : "Minjae Seo"
   avatar           : "profile.jpg"
   bio              : ""
-  location         : "San Jose, US"
+  location         : "Berkeley, US"
   employer         :
   pubmed           : 
   googlescholar    : 
-  email            : linghdong@gmail.com
+  email            : minjaecollege123@gmail.com
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
@@ -96,13 +96,13 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "milanmarks"
+  github           : "minjaeSeo6603"
   google_plus      :
   keybase          :
   instagram        :
   impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         : "haodong-ling"
+  linkedin         : "minjae-seo-6915b31b5"
   orcid            : 
   pinterest        :
   soundcloud       :
