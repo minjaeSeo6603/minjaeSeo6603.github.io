@@ -57,7 +57,7 @@ yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               : &twitter
+  username               : # &twitter
 facebook:
   username               :
   app_id                 :
@@ -80,43 +80,66 @@ analytics:
 
 # Site Author
 author:
-  name             : "Minjae Seo"
   avatar           : "profile.jpg"
-  bio              : ""
-  location         : "Berkeley, US"
-  employer         :
-  pubmed           : 
-  googlescholar    : 
-  email            : minjaecollege123@gmail.com
-  researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
-  uri              :
-  bitbucket        :
-  codepen          :
-  dribbble         :
-  flickr           :
-  facebook         :
-  foursquare       :
+  name             : "Minjae Seo"
+  bio              : "AI trainee & Part-time researcher"
+  location         : "Berkeley, CA"
+  employer         : "Handshake
+  email            : ppori34@berkeley.edu
+  
+  # Academic websites
+  arxiv            : # URL - Update with the correct link to your profile
+  googlescholar    : #"https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
+  impactstory      : # URL
+  orcid            : #"http://orcid.org/yourorcidurl"
+  semantic         : # URL
+  pubmed           : #"https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  researchgate     : # URL
+
+  # Repositories and software development
   github           : "minjaeSeo6603"
-  google_plus      :
-  keybase          :
-  instagram        :
-  impactstory      : #"https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
-  lastfm           :
+  bitbucket        : # Username - Update with your username on the site
+  codepen          : # Username
+  dribbble         : # Username
+  kaggle           : # Username  
+  stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")  
+
+  # Social media
   linkedin         : "minjae-seo-6915b31b5"
-  orcid            : 
-  pinterest        :
-  soundcloud       :
-  stackoverflow    : # http://stackoverflow.com/users/123456/username
-  steam            :
-  tumblr           :
-  twitter          : 
-  vine             :
-  weibo            :
-  xing             :
-  youtube          :
-  wikipedia        :
+  bluesky          : #"bsky.app" # Replace this with you Bluesky username
+  facebook         : # Username
+  flickr           : # Username
+  foursquare       : # Username
+  goodreads        : # Username
+  google_plus      : # Username
+  keybase          : # Username
+  instagram        : # Username
+  lastfm           : # Username 
+  mastodon         : # URL
+  medium           : # URL
+  pinterest        : # Username
+  soundcloud       : # Username
+  steam            : # Username
+  telegram         : # URL
+  tumblr           : # Username
+  twitter          : # Username for X / Twitter
+  vine             : # Username
+  weibo            : # Username
+  wikipedia        : # Username
+  xing             : # Username
+  youtube          : # Username
+  zhihu            : # URL
 
+# Research Category - The following is a list of contribution and portfolio categories and their headings
+portfolio_category:
+  Past:
+    title: 'Past'
+  InProgress/current:
+    title: 'In Progress'    
+  #Publications:
+  #  title: 'Publications'
 
+  
 # Reading Files
 include:
   - .htaccess
