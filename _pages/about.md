@@ -6,9 +6,6 @@ redirect_from:
   - /about/
   - /about.html
 ---
-
-[//]: # ""
-
 I'm currently an AI labelling analyst at Handshake AI. Before joining Handshake, I was a Statistics undergraduate at UC Berkeley, where I focused on Impact and Policy Evaluation using Causal Inference and Machine Learning methods. My specific interests include double machine learning, forecasting, healthcare analytics, and identification of staggered treatment effects in high-dimensional settings. 
 
 I'm actively looking for a Data Scientist and Analyst, Statistician, and researcher position in both private and public sectors.
