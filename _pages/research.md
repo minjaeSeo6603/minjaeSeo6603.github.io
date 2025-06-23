@@ -19,6 +19,6 @@ author_profile: true
 
 ## In Progress
 ---
-**Improvement of Health Policies, Programs, and regulations by applying Double Machine Learning**
+**Improvement of Health Policies, Programs, and Regulations by applying Double Machine Learning**
 
 **Using Instrumented Difference-In-Difference to estimate the effect of medicaid expansion on educational outcomes among lower-income groups**
