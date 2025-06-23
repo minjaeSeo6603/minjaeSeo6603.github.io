@@ -19,6 +19,6 @@ author_profile: true
 
 ## In Progress
 ---
-**Automated Causal Evaluation to develop the current programs and policies**
+**Improvement of Health Policies,Programs, annd regulations with applying Double Machine Learning**
 
 **Using Instrumented Difference-In-Difference to estimate the effect of medicaid expansion on educational outcomes among lower-income groups**
