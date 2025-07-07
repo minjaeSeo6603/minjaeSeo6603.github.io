@@ -6,10 +6,12 @@ redirect_from:
   - /about/
   - /about.html
 ---
-I'm currently an AI labelling analyst at [Handshake AI](https://joinhandshake.com/move-program/opportunities/math-stats-expert-(bachelor-s)-ai-trainer/). Before joining Handshake, I was a Statistics undergraduate at UC Berkeley, where I focused on Impact and Policy Evaluation using Causal Inference and Machine Learning methods. My specific interests include double machine learning, forecasting, healthcare analytics, and identification of staggered treatment effects in high-dimensional settings. 
+I am currently an AI Labeling Analyst at [Handshake AI](https://joinhandshake.com/move-program/opportunities/math-stats-expert-%28bachelor-s%29-ai-trainer/), specializing in the preparation and annotation of high-quality data for machine learning applications. Starting September 2025, I will begin the Master of Science in Computational Analysis and Public Policy at the University of Chicago, a program I'll complete in May 2027.
 
-I'm actively looking for a Data Scientist and Analyst, Statistician, and researcher position in both private and public sectors.
+I earned my Bachelor's in Statistics from UC Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis. My research interests encompass double machine learning, high-dimensional forecasting, healthcare analytics, and advanced econometric techniques for identifying staggered treatment effects.
 
-Please feel free to reach out at ppori34@berkeley.edu
+I am actively seeking internship opportunities for Summer 2026, particularly in internship roles such as Data Scientist, Quantitative Trader/Analyst/Researcher, Policy Analyst, or Machine Learning Researcher, open to both public and private sectors globally.
 
-In my free time, I used to go to the gym and do an hour of burnout sets.
+Feel free to reach out to me at [ppori34@berkeley.edu](mailto:ppori34@berkeley.edu), I would love to connect!
+
+In my free time, I enjoy weight training and challenging myself with intensive burnout sets at the gym.
