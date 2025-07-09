@@ -25,9 +25,9 @@ author:
   avatar           : "profile.jpg"
   name             : "Minjae Seo"
   pronouns         : # example: "she/her"  
-  bio              : "Graduate Student for Master of Science in CS & Public Policy"
-  location         : "Chicago, Illinois"
-  employer         : "Harris School of Public Policy at University of Chicago"
+  bio              : "AI Labelling Analyst"
+  location         : "Berkeley, CA" 
+  employer         : "Handshake AI"
   uri              : # URL
   email            : "ppori34@berkeley.edu" 
 
