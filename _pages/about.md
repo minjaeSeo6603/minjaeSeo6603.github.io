@@ -12,7 +12,7 @@ I am currently an AI Labeling Analyst at [Handshake AI](https://joinhandshake.co
 
 I earned my Bachelor's in Statistics from UC Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis. My research interests encompass double machine learning, high-dimensional forecasting, healthcare analytics, and advanced econometric techniques for identifying staggered treatment effects.
 
-I am actively seeking full-time opportunities for Summer 2026, particularly in internship roles such as Data Scientist, Quantitative Trader/Analyst/Researcher, Machine Learning Researcher, and AI engineer, open to both public and private sectors globally.
+I am actively seeking full-time opportunities starting immediately, particularly data scientist, quantitative trader/analyst/researcher, machine learning researcher, and AI engineer, open to both public and private sectors globally.
 
 Feel free to reach out to me at [ppori34@berkeley.edu](mailto:ppori34@berkeley.edu), I would love to connect!
 
