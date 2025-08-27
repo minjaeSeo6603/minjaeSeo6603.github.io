@@ -9,5 +9,5 @@ redirect_from:
 
 {% include base_path %}
 
-[CV](https://minjaeSeo6603.github.io/files/Resume_MJ_3_(1).pdf)
+[CV](https://minjaeSeo6603.github.io/files/Minjae_Seo_CV.pdf)
 
