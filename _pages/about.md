@@ -6,11 +6,6 @@ redirect_from:
   - /about/
   - /about.html
 ---
-**Recent Work** 
-In the past Spring, I worked as an AI Labeling Analyst at [Handshake AI](https://joinhandshake.com/move-program/opportunities/math-stats-expert-%28bachelor-s%29-ai-trainer/), specializing in the preparation and annotation of high-quality data for machine learning applications. 
-
-<!-- Starting September 2025, I will begin the Master of Science in Computational Analysis and Public Policy at the University of Chicago, a program I'll complete in May 2027. --> 
-
 I am currently a Master of Arts in Public Policy candidate with a Certificate in Research Methods** at the University of Chicago. I hold a B.A. in Statistics from the University of California, Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis.
 
 My research interests lie at the intersection of applied econometrics, computational social science, and data-driven policy evaluation**, with a particular focus on double machine learning, high-dimensional forecasting, healthcare analytics, and advanced econometric approaches for identifying staggered treatment effects.
