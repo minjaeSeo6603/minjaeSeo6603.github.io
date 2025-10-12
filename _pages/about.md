@@ -11,9 +11,13 @@ In the past Spring, I worked as an AI Labeling Analyst at [Handshake AI](https:/
 
 <!-- Starting September 2025, I will begin the Master of Science in Computational Analysis and Public Policy at the University of Chicago, a program I'll complete in May 2027. --> 
 
-I am currently a Master of Science in Computational Analysis and Public Policy candidate at the University of Chicago. In the past, I earned my Bachelor's in Statistics from UC Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis. My research interests encompass double machine learning, high-dimensional forecasting, healthcare analytics, and advanced econometric techniques for identifying staggered treatment effects.
+I am currently a Master of Arts in Public Policy candidate with a Certificate in Research Methods** at the University of Chicago. I hold a B.A. in Statistics from the University of California, Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis.
 
-I am actively seeking full-time opportunities starting immediately, particularly as a data scientist, quantitative trader/analyst/researcher, machine learning researcher, and AI engineer, open to both public and private sectors globally.
+My research interests lie at the intersection of applied econometrics, computational social science, and data-driven policy evaluation**, with a particular focus on double machine learning, high-dimensional forecasting, healthcare analytics, and advanced econometric approaches for identifying staggered treatment effects.
+
+At the University of Chicago Department of Computer Science, I serve as a Graduate Teaching Assistant for Mathematical Foundations of Machine Learning (CMSC 25300). In this role, I lead weekly recitations and office hours for over 20 students, facilitate discussions on matrix methods, linear algebra, and probabilistic modeling, and design instructional demos on topics such as **singular value decomposition (SVD) and expectation maximization (EM). I also coordinate homework releases, grading, and course logistics through Canvas and **Gradescope**, ensuring a smooth and supportive learning experience.
+
+I am actively seeking full-time opportunities for the summer of 2026, particularly as a data scientist, quantitative trader/analyst/researcher, machine learning researcher, and AI engineer, open to both public and private sectors globally.
 
 Feel free to reach out to me at [minjaeseo@uchicago.edu](mailto:minjaeseo@uchicago.edu) or [ppori34@berkeley.edu](mailto:ppori34@berkeley.edu). I would love to connect!
 
