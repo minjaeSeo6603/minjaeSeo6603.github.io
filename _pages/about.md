@@ -6,7 +6,7 @@ redirect_from:
   - /about/
   - /about.html
 ---
-I am currently a Master of Arts in Public Policy candidate with a Certificate in Research Methods** at the University of Chicago. I hold a B.A. in Statistics from the University of California, Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis.
+I am currently a Master of Arts in Public Policy candidate with a Certificate in Research Methods at the University of Chicago. I hold a B.A. in Statistics from the University of California, Berkeley, where I specialized in causal inference and machine learning methodologies applied to impact evaluation and policy analysis.
 
 My research interests lie at the intersection of applied econometrics, computational social science, and data-driven policy evaluation, with a particular focus on double machine learning, high-dimensional forecasting, healthcare analytics, and advanced econometric approaches for identifying staggered treatment effects.
 
