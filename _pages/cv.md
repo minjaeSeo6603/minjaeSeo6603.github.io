@@ -8,6 +8,3 @@ redirect_from:
 ---
 
 {% include base_path %}
-
-[CV](https://minjaeSeo6603.github.io/files/Seo_Minjae_CV.pdf)
-
