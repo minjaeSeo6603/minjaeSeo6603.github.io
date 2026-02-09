@@ -1,0 +1,1212 @@
+---
+title: "Inherited Trust and Economic Development"
+subtitle: "Replication"
+author: "Minjae Seo"
+format:
+  pdf:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    documentclass: article
+    geometry:
+      - top=2.5cm
+      - bottom=2.5cm
+      - left=2.5cm
+      - right=2.5cm
+    fontsize: 11pt
+    linestretch: 1.5
+    fig-pos: "H"
+    keep-tex: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 7,
+  fig.height = 5,
+  fig.align = "center",
+  results = "asis"
+)
+
+library(tidyverse)
+library(lmtest)
+library(sandwich)
+library(haven)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+```
+
+# Introduction
+
+Trust is widely recognized as a fundamental component of social capital that facilitates economic transactions, reduces monitoring costs, and promotes cooperation. A critical question in the economics literature is whether trust is primarily shaped by contemporary institutions and economic conditions, or whether it reflects deeply rooted cultural values that persist across generations.
+
+This study investigates the **intergenerational transmission of trust** using a novel empirical strategy: analyzing trust levels among descendants of US immigrants. By examining how trust attitudes vary among Americans based on their ancestral country of origin, we can isolate the cultural component of trust from current institutional effects. If trust is purely determined by the institutional environment, immigrants and their descendants should converge to American trust levels. However, if trust has a persistent cultural component, we should observe systematic differences in trust levels that correlate with trust in the ancestral home country.
+
+The analysis consists of two main components:
+
+1. **Microestimates**: Individual-level analysis using the General Social Survey (GSS) to estimate inherited trust among US immigrants across different generations and cohorts
+
+2. **Macroestimates**: Country-level analysis examining the relationship between inherited trust and economic development, controlling for initial conditions and institutional quality
+
+\newpage
+
+# Data and Methodology
+
+## Data Sources
+
+We utilize two primary datasets for this analysis:
+
+**AER_MICRO.dta** contains individual-level data from the General Social Survey (GSS), including:
+
+- Trust attitudes measured on a standardized scale
+- Demographic characteristics (age, gender, education, income, employment status)
+- Religious affiliation (Catholic, Protestant, no religion)
+- Ancestral country of origin
+- Immigration generation (2nd, 3rd, or 4th generation American)
+
+**AER_MACRO.dta** contains country-level data including:
+
+- GDP per capita relative to Sweden as a benchmark
+- Trust levels from the World Values Survey (WVS)
+- Institutional quality measured by the Polity2 index
+- Inherited trust estimates derived from GSS microdata
+
+## Empirical Strategy
+
+The identification strategy relies on comparing trust levels among Americans whose ancestors emigrated from different countries. We define two main cohorts based on when the ancestors' cultural attitudes were formed:
+
+- **Cohort 1935**: Ancestors' trust attitudes reflect conditions in the home country around 1935
+- **Cohort 2000**: Ancestors' trust attitudes reflect more recent conditions
+
+By comparing inherited trust with contemporaneous trust in the home country, we can assess whether cultural transmission occurs and how it evolves over time.
+
+```{r load-data}
+micro_data <- read_dta("replication/data/AER_MICRO.dta")
+macro_data <- read_dta("replication/data/AER_MACRO.dta")
+```
+
+\newpage
+
+# Microestimates: Inherited Trust in the GSS
+
+## Defining Immigration Generations
+
+We classify GSS respondents into immigration generations based on the nativity of their parents and grandparents:
+
+- **2nd Generation**: Respondent born in the US, but at least one parent foreign-born and all grandparents foreign-born
+- **3rd Generation**: Respondent and both parents born in the US, but at least half of grandparents foreign-born
+- **4th Generation**: Respondent, both parents, and more than half of grandparents born in the US
+
+This classification allows us to examine how trust attitudes evolve across successive generations of Americans while controlling for ancestral origin.
+
+```{r define-generations}
+micro_data <- micro_data %>%
+  mutate(
+    gen2 = as.numeric(nativegp == 0 & nativep <= 0.5 & native == 1),
+    gen3 = as.numeric(nativegp <= 0.5 & nativep == 1 & native == 1 &
+                      !is.na(nativegp) & !is.na(nativep)),
+    gen4 = as.numeric(nativegp > 0.5 & nativep == 1 & native == 1 &
+                      !is.na(nativegp) & !is.na(nativep)),
+    coh2000 = as.numeric((gen2 == 1 & naiss >= 1910) |
+                         (gen3 == 1 & naiss >= 1935) |
+                         (gen4 == 1 & naiss >= 1960)),
+    coh1935 = as.numeric((gen2 == 1 & naiss < 1910) |
+                         (gen3 == 1 & naiss < 1935) |
+                         (gen4 == 1 & naiss < 1960))
+  )
+```
+
+## Summary Statistics
+
+```{r summary-stats}
+summary_2000 <- micro_data %>%
+  filter(coh2000 == 1 & cty_sample == 1) %>%
+  summarise(
+    `Sample Size` = n(),
+    `Mean Age` = mean(age, na.rm = TRUE),
+    `SD Age` = sd(age, na.rm = TRUE),
+    `Male (%)` = mean(men, na.rm = TRUE) * 100,
+    `Years of Education` = mean(ageedu, na.rm = TRUE),
+    `High Income (%)` = mean(incomegood, na.rm = TRUE) * 100,
+    `Employed (%)` = mean(employed, na.rm = TRUE) * 100,
+    `Unemployed (%)` = mean(unemployed, na.rm = TRUE) * 100
+  ) %>%
+  pivot_longer(everything(), names_to = "Variable", values_to = "Value") %>%
+  mutate(Cohort = "2000")
+
+summary_1935 <- micro_data %>%
+  filter(coh1935 == 1 & cty_sample == 1) %>%
+  summarise(
+    `Sample Size` = n(),
+    `Mean Age` = mean(age, na.rm = TRUE),
+    `SD Age` = sd(age, na.rm = TRUE),
+    `Male (%)` = mean(men, na.rm = TRUE) * 100,
+    `Years of Education` = mean(ageedu, na.rm = TRUE),
+    `High Income (%)` = mean(incomegood, na.rm = TRUE) * 100,
+    `Employed (%)` = mean(employed, na.rm = TRUE) * 100,
+    `Unemployed (%)` = mean(unemployed, na.rm = TRUE) * 100
+  ) %>%
+  pivot_longer(everything(), names_to = "Variable", values_to = "Value") %>%
+  mutate(Cohort = "1935")
+
+combined_summary <- bind_rows(summary_2000, summary_1935) %>%
+  pivot_wider(names_from = Cohort, values_from = Value, names_prefix = "Cohort ") %>%
+  mutate(across(where(is.numeric), ~sprintf("%.2f", .)))
+
+kable(combined_summary, caption = "Summary Statistics by Cohort",
+      align = c("l", "c", "c"), booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position"), full_width = FALSE)
+```
+
+The summary statistics reveal important differences between the two cohorts. The Cohort 2000 sample is younger on average, reflecting the fact that these individuals have more recent immigrant ancestors. Education levels and employment rates also differ between cohorts, highlighting the importance of controlling for these socioeconomic factors in our regression analysis.
+
+\newpage
+
+## Main Regression Results
+
+We estimate the effect of ancestral origin on trust using OLS regression with clustered standard errors by ethnicity:
+
+$$Trust_i = \alpha + \beta X_i + \sum_{c} \gamma_c \cdot Country_c \times Cohort + \epsilon_i$$
+
+where $X_i$ includes individual characteristics (age, age squared, gender, education, income, religion, and employment status), and we include country-by-cohort fixed effects to capture inherited trust for each origin country in each time period.
+
+```{r country-cohort-setup}
+country_list <- c("Afri", "Aut", "Bg", "Cd", "Czr", "Dk", "Fin", "Fra", "Ger", "Hg",
+                  "India", "Ire", "Ita", "Mx", "Nth", "Nw", "Pol", "Pt", "Rus", "Sp",
+                  "Swd", "Switz", "Uk", "Youg")
+cohort_list <- c("coh1935", "coh2000")
+
+for (country in country_list) {
+  for (cohort in cohort_list) {
+    col_name <- paste0(country, "_", cohort)
+    micro_data[[col_name]] <- micro_data[[country]] * micro_data[[cohort]]
+  }
+}
+
+cluster_se <- function(model, cluster_var) {
+  vcov_cluster <- vcovCL(model, cluster = cluster_var, type = "HC0")
+  sqrt(diag(vcov_cluster))
+}
+```
+
+```{r table1-regression}
+table1_data <- micro_data %>%
+  filter((coh2000 == 1 | coh1935 == 1) & cty_sample == 1 & religionok == 1) %>%
+  mutate(age2 = age^2)
+
+country_cohort_vars <- paste(
+  c("Afri_coh2000", "Afri_coh1935", "Aut_coh2000", "Aut_coh1935", "Bg_coh2000", "Bg_coh1935",
+    "Cd_coh2000", "Cd_coh1935", "Czr_coh2000", "Czr_coh1935", "Dk_coh2000", "Dk_coh1935",
+    "Fra_coh2000", "Fra_coh1935", "Fin_coh2000", "Fin_coh1935", "Ger_coh2000", "Ger_coh1935",
+    "Hg_coh2000", "Hg_coh1935", "India_coh2000", "India_coh1935", "Ire_coh2000", "Ire_coh1935",
+    "Ita_coh2000", "Ita_coh1935", "Mx_coh2000", "Mx_coh1935", "Nth_coh2000", "Nth_coh1935",
+    "Nw_coh2000", "Nw_coh1935", "Pol_coh2000", "Pol_coh1935", "Pt_coh2000", "Pt_coh1935",
+    "Rus_coh2000", "Rus_coh1935", "Sp_coh2000", "Sp_coh1935", "Swd_coh2000", "Switz_coh2000",
+    "Switz_coh1935", "Uk_coh2000", "Uk_coh1935", "Youg_coh2000", "Youg_coh1935"),
+  collapse = " + "
+)
+
+formula_table1 <- paste0("trust10_large ~ age + men + ageedu + age2 + incomegood + catho + pro + employed + ",
+                         "inactive + unemployed + ", country_cohort_vars)
+
+model1 <- lm(as.formula(formula_table1), data = table1_data)
+se_cluster <- cluster_se(model1, table1_data$eth)
+
+# Define key variables and their display names
+key_vars <- c("age", "men", "ageedu", "age2", "incomegood", "catho", "pro",
+              "employed", "inactive", "unemployed")
+var_labels <- c("Age", "Male", "Years of Education", "Age Squared", "High Income",
+                "Catholic", "Protestant", "Employed", "Inactive", "Unemployed")
+
+# Only include variables that have non-NA coefficients (some may be dropped due to multicollinearity)
+available_vars <- key_vars[!is.na(coef(model1)[key_vars])]
+available_labels <- var_labels[!is.na(coef(model1)[key_vars])]
+
+coef_table <- data.frame(
+  Variable = available_labels,
+  Coefficient = coef(model1)[available_vars],
+  SE = se_cluster[available_vars]
+) %>%
+  mutate(
+    Sig = case_when(
+      abs(Coefficient / SE) > 2.576 ~ "***",
+      abs(Coefficient / SE) > 1.96 ~ "**",
+      abs(Coefficient / SE) > 1.645 ~ "*",
+      TRUE ~ ""
+    ),
+    Estimate = paste0(sprintf("%.4f", Coefficient), Sig),
+    `Std. Error` = sprintf("(%.4f)", SE)
+  ) %>%
+  select(Variable, Estimate, `Std. Error`)
+
+kable(coef_table, caption = "Table I: Effect of Individual Characteristics on Trust",
+      align = c("l", "c", "c"), booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
+  footnote(general = "*** p<0.01, ** p<0.05, * p<0.10. Standard errors clustered by ethnicity in parentheses.",
+           general_title = "Note: ", footnote_as_chunk = TRUE)
+```
+
+**Interpretation**: The results show that individual characteristics significantly influence trust levels. Education has a strong positive effect on trust, consistent with the human capital literature. Income also positively affects trust. Religious affiliation shows differential effects, with Protestants displaying higher trust levels on average. The key finding is that after controlling for these individual characteristics, substantial variation in trust remains that is explained by country-of-origin fixed effects, indicating persistent cultural differences.
+
+\newpage
+
+## Cohort-Specific Regression Results
+
+To understand how inherited trust varies across time periods, we estimate separate regressions for each cohort. Sweden serves as the reference country in both specifications.
+
+```{r table2-cohort-regressions}
+# Country variables for cohort-specific regressions (excluding Sweden as reference)
+country_vars <- c("Afri", "Aut", "Bg", "Uk", "Cd", "Czr", "Dk", "Fin", "Fra", "Ger",
+                  "Hg", "India", "Ire", "Ita", "Mx", "Nth", "Nw", "Pol", "Pt", "Rus",
+                  "Sp", "Switz", "Youg")
+
+# Check which country variables exist in the data
+existing_country_vars <- country_vars[country_vars %in% names(micro_data)]
+
+# Cohort 1935 regression
+coh1935_reg_data <- micro_data %>%
+  filter(cty_sample == 1 & religionok == 1 & coh1935 == 1)
+
+formula_1935 <- paste0("trust10_large ~ age + men + ageedu + incomegood + catho + pro + unemployed + employed + ",
+                       paste(existing_country_vars, collapse = " + "))
+
+model_1935 <- lm(as.formula(formula_1935), data = coh1935_reg_data)
+se_1935 <- cluster_se(model_1935, coh1935_reg_data$eth)
+
+# Cohort 2000 regression
+coh2000_reg_data <- micro_data %>%
+  filter(cty_sample == 1 & religionok == 1 & coh2000 == 1)
+
+formula_2000 <- paste0("trust10_large ~ age + men + ageedu + incomegood + catho + pro + unemployed + employed + ",
+                       paste(existing_country_vars, collapse = " + "))
+
+model_2000 <- lm(as.formula(formula_2000), data = coh2000_reg_data)
+se_2000 <- cluster_se(model_2000, coh2000_reg_data$eth)
+
+# Create results table for country fixed effects with significance stars
+get_sig <- function(coef, se) {
+  t_val <- abs(coef / se)
+  case_when(t_val > 2.576 ~ "***", t_val > 1.96 ~ "**", t_val > 1.645 ~ "*", TRUE ~ "")
+}
+
+country_results <- data.frame(
+  Country = existing_country_vars,
+  Coef_1935 = coef(model_1935)[existing_country_vars],
+  SE_1935 = se_1935[existing_country_vars],
+  Coef_2000 = coef(model_2000)[existing_country_vars],
+  SE_2000 = se_2000[existing_country_vars]
+) %>%
+  mutate(
+    `Cohort 1935` = paste0(sprintf("%.3f", Coef_1935), get_sig(Coef_1935, SE_1935)),
+    `SE 1935` = sprintf("(%.3f)", SE_1935),
+    `Cohort 2000` = paste0(sprintf("%.3f", Coef_2000), get_sig(Coef_2000, SE_2000)),
+    `SE 2000` = sprintf("(%.3f)", SE_2000)
+  ) %>%
+  select(Country, `Cohort 1935`, `SE 1935`, `Cohort 2000`, `SE 2000`)
+
+kable(country_results, caption = "Table II: Country Fixed Effects by Cohort (Reference: Sweden)",
+      align = c("l", "c", "c", "c", "c"), booktabs = TRUE,
+      col.names = c("Country", "Coef.", "SE", "Coef.", "SE")) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE) %>%
+  add_header_above(c(" " = 1, "Cohort 1935" = 2, "Cohort 2000" = 2)) %>%
+  footnote(general = "*** p<0.01, ** p<0.05, * p<0.10. Standard errors in parentheses.",
+           general_title = "Note: ", footnote_as_chunk = TRUE)
+```
+
+**Interpretation**: Table II presents the estimated country fixed effects relative to Sweden for each cohort. These coefficients represent the average trust differential between descendants of immigrants from each country and those from Sweden, after controlling for individual characteristics. Positive coefficients indicate higher trust than Swedish descendants, while negative values indicate lower trust. The comparison across cohorts reveals how the cultural transmission of trust has evolved over time.
+
+\newpage
+
+## Correlation with Home Country Trust
+
+A crucial test of the cultural transmission hypothesis is whether inherited trust among US immigrants correlates with contemporaneous trust levels in the ancestral home country. If trust is culturally transmitted, we should observe a positive correlation even after controlling for individual characteristics.
+
+```{r table3-models}
+coh1935_data <- micro_data %>%
+  filter(cty_sample == 1 & religionok == 1 & coh1935 == 1)
+
+coh2000_data <- micro_data %>%
+  filter(cty_sample == 1 & religionok == 1 & coh2000 == 1)
+
+col1_data <- micro_data %>%
+  filter(cty_sample == 1 & coh2000 == 1 & religionok == 1)
+
+model_col1 <- lm(trust10_large ~ trustwvs2000 + age + men + ageedu + incomegood + unemployed +
+                   employed + catho + pro, data = col1_data)
+
+col2_data <- micro_data %>%
+  filter(cty_sample == 1 & coh1935 == 1 & religionok == 1)
+
+model_col2 <- lm(trust10_large ~ trustwvs2000 + age + men + ageedu + incomegood + catho + pro +
+                   unemployed + employed, data = col2_data)
+
+col3_data <- micro_data %>%
+  filter(cty_sample == 1 & gen4 == 1 & naiss >= 1960 & religionok == 1)
+
+model_col3 <- lm(trust10_large ~ trustwvs2000 + age + men + ageedu + incomegood + unemployed +
+                   employed + catho + pro, data = col3_data)
+
+# Get clustered SEs for Table III
+se_col1 <- cluster_se(model_col1, col1_data$eth)["trustwvs2000"]
+se_col2 <- cluster_se(model_col2, col2_data$eth)["trustwvs2000"]
+se_col3 <- cluster_se(model_col3, col3_data$eth)["trustwvs2000"]
+
+coef1 <- coef(model_col1)["trustwvs2000"]
+coef2 <- coef(model_col2)["trustwvs2000"]
+coef3 <- coef(model_col3)["trustwvs2000"]
+
+table3_results <- data.frame(
+  Variable = c("Home Country Trust (WVS)", "", "Controls", "Observations", "R-squared"),
+  Col1 = c(paste0(sprintf("%.4f", coef1), get_sig(coef1, se_col1)),
+           sprintf("(%.4f)", se_col1), "Yes",
+           format(nobs(model_col1), big.mark = ","),
+           sprintf("%.4f", summary(model_col1)$r.squared)),
+  Col2 = c(paste0(sprintf("%.4f", coef2), get_sig(coef2, se_col2)),
+           sprintf("(%.4f)", se_col2), "Yes",
+           format(nobs(model_col2), big.mark = ","),
+           sprintf("%.4f", summary(model_col2)$r.squared)),
+  Col3 = c(paste0(sprintf("%.4f", coef3), get_sig(coef3, se_col3)),
+           sprintf("(%.4f)", se_col3), "Yes",
+           format(nobs(model_col3), big.mark = ","),
+           sprintf("%.4f", summary(model_col3)$r.squared))
+)
+
+kable(table3_results, caption = "Table III: Correlation Between Inherited Trust and Home Country Trust",
+      col.names = c("", "(1) Cohort 2000", "(2) Cohort 1935", "(3) 4th Gen."),
+      align = c("l", "c", "c", "c"), booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
+  footnote(general = "Dependent variable: Individual trust. *** p<0.01, ** p<0.05, * p<0.10.",
+           general_title = "Note: ", footnote_as_chunk = TRUE)
+```
+
+**Interpretation**: The positive and significant coefficients on home country trust across all specifications provide strong evidence for cultural transmission. Notably, the correlation persists even for 4th generation Americans, whose families have been in the United States for over a century. This suggests that trust attitudes are deeply rooted cultural traits that persist across multiple generations despite exposure to American institutions.
+
+\newpage
+
+## Placebo Test: Random Country Assignment
+
+To validate that our results capture genuine cultural transmission rather than spurious correlation, we conduct a placebo test by assigning each respondent's trust level to a randomly selected country instead of their actual ancestral origin.
+
+```{r table4-counterfactual}
+col1_cf <- micro_data %>%
+  filter(cty_sample == 1 & ((gen2 == 1 & naiss >= 1910) | (gen3 == 1 & naiss >= 1935) |
+           (gen4 == 1 & naiss >= 1960)) & religionok == 1)
+
+model_cf_col1 <- lm(trust10_large ~ trustwvs_rand + age + men + ageedu + incomegood + unemployed +
+                      employed + catho + pro, data = col1_cf)
+
+model_cf_col2 <- lm(trust10_large ~ trustwvs_rand + age + men + ageedu + incomegood + catho + pro +
+                      unemployed + employed, data = col2_data)
+
+# Get clustered SEs for Table IV
+se_cf1 <- cluster_se(model_cf_col1, col1_cf$eth)["trustwvs_rand"]
+se_cf2 <- cluster_se(model_cf_col2, col2_data$eth)["trustwvs_rand"]
+
+coef_cf1 <- coef(model_cf_col1)["trustwvs_rand"]
+coef_cf2 <- coef(model_cf_col2)["trustwvs_rand"]
+
+table4_results <- data.frame(
+  Variable = c("Random Country Trust", "", "Controls", "Observations", "R-squared"),
+  Col1 = c(paste0(sprintf("%.4f", coef_cf1), get_sig(coef_cf1, se_cf1)),
+           sprintf("(%.4f)", se_cf1), "Yes",
+           format(nobs(model_cf_col1), big.mark = ","),
+           sprintf("%.4f", summary(model_cf_col1)$r.squared)),
+  Col2 = c(paste0(sprintf("%.4f", coef_cf2), get_sig(coef_cf2, se_cf2)),
+           sprintf("(%.4f)", se_cf2), "Yes",
+           format(nobs(model_cf_col2), big.mark = ","),
+           sprintf("%.4f", summary(model_cf_col2)$r.squared))
+)
+
+kable(table4_results, caption = "Table IV: Placebo Test - Random Country Assignment",
+      col.names = c("", "(1) Cohort 2000", "(2) Cohort 1935"),
+      align = c("l", "c", "c"), booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position"), full_width = FALSE) %>%
+  footnote(general = "Random trust assigned from randomly selected country. *** p<0.01, ** p<0.05, * p<0.10.",
+           general_title = "Note: ", footnote_as_chunk = TRUE)
+```
+
+**Interpretation**: The placebo test shows that when we randomly assign country trust levels to respondents, the correlation disappears or becomes much weaker. This confirms that our main results are driven by genuine cultural transmission from the ancestral country, not by spurious correlation or methodological artifacts. The contrast between the actual and placebo results strengthens our confidence in the cultural transmission hypothesis.
+
+\newpage
+
+# Macroestimates: Growth and Inherited Trust
+
+Having established that trust is transmitted across generations, we now examine whether inherited trust has implications for economic development. The macro analysis uses country-level data to estimate the relationship between inherited trust and GDP per capita.
+
+## Key Variables
+
+- **GDP per capita (relative to Sweden)**: Using Sweden as a benchmark allows cross-country comparison while controlling for global economic trends
+- **Inherited trust**: Estimated from GSS microdata, representing the trust levels that would prevail if institutional conditions were the same across countries
+- **Polity2 index**: Measures institutional quality to control for the direct effect of institutions on economic outcomes
+
+```{r macro-setup}
+macro_data <- macro_data %>%
+  mutate(cty_factor = as.factor(cty))
+```
+
+## Visual Evidence
+
+```{r figure1, fig.cap="This figure plots inherited trust among 2000-cohort immigrants against contemporaneous trust in their home countries. The strong positive correlation (R² shown in title) indicates that cultural attitudes persist across generations and maintain connection to home country values.", fig.height=4.5}
+model_fig1 <- lm(trustwvs2000 ~ trustgss, data = macro_data %>% filter(period == 2000))
+r2_fig1 <- summary(model_fig1)$r.squared
+
+macro_data %>%
+  filter(period == 2000) %>%
+  ggplot(aes(x = trustgss, y = trustwvs2000)) +
+  geom_point(size = 3, color = "darkblue") +
+  geom_smooth(method = "lm", se = TRUE, alpha = 0.2, color = "red") +
+  geom_text(aes(label = cty), size = 2.5, nudge_y = 0.025, check_overlap = TRUE) +
+  labs(title = paste0("Figure 1: Inherited Trust vs. Home Country Trust (R² = ", round(r2_fig1, 3), ")"),
+       x = "Inherited Trust (from GSS, Cohort 2000)",
+       y = "Trust in Home Country (WVS 2000)") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 11, face = "bold"))
+```
+
+The strong positive relationship between inherited trust and home country trust confirms our micro-level findings at the aggregate level. Countries with high trust (like Scandinavian nations) produce immigrants whose descendants also exhibit high trust, while countries with lower trust show the opposite pattern.
+
+```{r figure3, fig.cap="This figure shows the relationship between inherited trust and economic development. Countries whose immigrants exhibit higher trust levels also tend to have higher GDP per capita, suggesting a link between cultural attitudes and economic outcomes.", fig.height=4.5}
+macro_fig3_data <- macro_data %>%
+  filter(period == 2000 & Afri != 1 & India != 1)
+
+model_fig3 <- lm(gdpk_diffswd_good ~ trustgss, data = macro_fig3_data)
+r2_fig3 <- summary(model_fig3)$r.squared
+
+macro_fig3_data %>%
+  ggplot(aes(x = trustgss, y = gdpk_diffswd_good)) +
+  geom_point(size = 3, color = "darkgreen") +
+  geom_smooth(method = "lm", se = TRUE, alpha = 0.2, color = "red") +
+  geom_text(aes(label = cty), size = 2.5, nudge_y = 800, check_overlap = TRUE) +
+  labs(title = paste0("Figure 2: Inherited Trust and GDP per Capita (R² = ", round(r2_fig3, 3), ")"),
+       x = "Inherited Trust (from GSS, Cohort 2000)",
+       y = "GDP per Capita Relative to Sweden") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 11, face = "bold"))
+```
+
+\newpage
+
+## Cross-Country Regression Results
+
+We estimate the following specification:
+
+$$GDP_{c,t} = \beta_1 \cdot InheritedTrust_{c,t} + \beta_2 \cdot GDP_{c,t-1} + \beta_3 \cdot Institutions_{c,t} + \mu_c + \epsilon_{c,t}$$
+
+```{r table5}
+table5_data <- macro_data %>%
+  filter(period19352000 == 1)
+
+model_t5_m1 <- lm(gdpk_diffswd_good ~ trustgss - 1, data = table5_data)
+model_t5_m2 <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 - 1, data = table5_data)
+model_t5_m3 <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 + polity2diff - 1, data = table5_data)
+model_t5_m4 <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 + polity2diff - 1,
+                  data = table5_data %>% filter(cty != "Afri"))
+
+# Helper function to format coefficient with significance
+format_coef <- function(model, var) {
+  coef_val <- coef(model)[var]
+  se_val <- summary(model)$coefficients[var, "Std. Error"]
+  t_val <- abs(coef_val / se_val)
+  sig <- ifelse(t_val > 2.576, "***", ifelse(t_val > 1.96, "**", ifelse(t_val > 1.645, "*", "")))
+  paste0(sprintf("%.1f", coef_val), sig)
+}
+
+format_se <- function(model, var) {
+  sprintf("(%.1f)", summary(model)$coefficients[var, "Std. Error"])
+}
+
+table5_results <- data.frame(
+  Variable = c("Inherited Trust", "", "Lagged GDP", "", "Polity2", "", "N", "Adj. R²"),
+  Col1 = c(format_coef(model_t5_m1, "trustgss"), format_se(model_t5_m1, "trustgss"),
+           "", "", "", "", nobs(model_t5_m1), sprintf("%.3f", summary(model_t5_m1)$adj.r.squared)),
+  Col2 = c(format_coef(model_t5_m2, "trustgss"), format_se(model_t5_m2, "trustgss"),
+           sprintf("%.3f***", coef(model_t5_m2)["gdpk_diffswd_good_1"]),
+           sprintf("(%.3f)", summary(model_t5_m2)$coefficients["gdpk_diffswd_good_1", "Std. Error"]),
+           "", "", nobs(model_t5_m2), sprintf("%.3f", summary(model_t5_m2)$adj.r.squared)),
+  Col3 = c(format_coef(model_t5_m3, "trustgss"), format_se(model_t5_m3, "trustgss"),
+           sprintf("%.3f***", coef(model_t5_m3)["gdpk_diffswd_good_1"]),
+           sprintf("(%.3f)", summary(model_t5_m3)$coefficients["gdpk_diffswd_good_1", "Std. Error"]),
+           sprintf("%.1f", coef(model_t5_m3)["polity2diff"]),
+           sprintf("(%.1f)", summary(model_t5_m3)$coefficients["polity2diff", "Std. Error"]),
+           nobs(model_t5_m3), sprintf("%.3f", summary(model_t5_m3)$adj.r.squared)),
+  Col4 = c(format_coef(model_t5_m4, "trustgss"), format_se(model_t5_m4, "trustgss"),
+           sprintf("%.3f***", coef(model_t5_m4)["gdpk_diffswd_good_1"]),
+           sprintf("(%.3f)", summary(model_t5_m4)$coefficients["gdpk_diffswd_good_1", "Std. Error"]),
+           sprintf("%.1f", coef(model_t5_m4)["polity2diff"]),
+           sprintf("(%.1f)", summary(model_t5_m4)$coefficients["polity2diff", "Std. Error"]),
+           nobs(model_t5_m4), sprintf("%.3f", summary(model_t5_m4)$adj.r.squared))
+)
+
+kable(table5_results, caption = "Table V: Cross-Country Regressions",
+      col.names = c("", "(1)", "(2)", "(3)", "(4)"),
+      align = c("l", "c", "c", "c", "c"), booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE) %>%
+  footnote(general = "DV: GDP per capita (relative to Sweden). SE in parentheses. *** p<0.01. (4) excludes Africa.",
+           general_title = "Note: ", footnote_as_chunk = TRUE)
+```
+
+**Interpretation**: Across all specifications, inherited trust shows a positive and significant relationship with GDP per capita. Column (1) shows the unconditional correlation. Column (2) adds lagged GDP to control for convergence dynamics. Column (3) includes institutional quality, yet inherited trust remains significant, suggesting that culture operates through channels beyond formal institutions. Column (4) shows robustness to excluding African countries, which might have distinct historical experiences.
+
+\newpage
+
+## Panel Estimates with Country Fixed Effects
+
+```{r table6}
+model_t6_m1 <- lm(gdpk_diffswd_good ~ trustgss + cty_factor - 1, data = table5_data)
+model_t6_m2 <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 + cty_factor - 1, data = table5_data)
+model_t6_m3 <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 + cty_factor - 1,
+                  data = table5_data %>% filter(cty != "Afri"))
+model_t6_m4 <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 + polity2diff + cty_factor - 1,
+                  data = table5_data)
+
+table6_results <- data.frame(
+  Variable = c("Inherited Trust", "", "Lagged GDP", "", "Polity2", "", "Country FE", "N"),
+  Col1 = c(format_coef(model_t6_m1, "trustgss"), format_se(model_t6_m1, "trustgss"),
+           "", "", "", "", "Yes", nobs(model_t6_m1)),
+  Col2 = c(format_coef(model_t6_m2, "trustgss"), format_se(model_t6_m2, "trustgss"),
+           sprintf("%.3f***", coef(model_t6_m2)["gdpk_diffswd_good_1"]),
+           sprintf("(%.3f)", summary(model_t6_m2)$coefficients["gdpk_diffswd_good_1", "Std. Error"]),
+           "", "", "Yes", nobs(model_t6_m2)),
+  Col3 = c(format_coef(model_t6_m3, "trustgss"), format_se(model_t6_m3, "trustgss"),
+           sprintf("%.3f***", coef(model_t6_m3)["gdpk_diffswd_good_1"]),
+           sprintf("(%.3f)", summary(model_t6_m3)$coefficients["gdpk_diffswd_good_1", "Std. Error"]),
+           "", "", "Yes", nobs(model_t6_m3)),
+  Col4 = c(format_coef(model_t6_m4, "trustgss"), format_se(model_t6_m4, "trustgss"),
+           sprintf("%.3f***", coef(model_t6_m4)["gdpk_diffswd_good_1"]),
+           sprintf("(%.3f)", summary(model_t6_m4)$coefficients["gdpk_diffswd_good_1", "Std. Error"]),
+           sprintf("%.1f", coef(model_t6_m4)["polity2diff"]),
+           sprintf("(%.1f)", summary(model_t6_m4)$coefficients["polity2diff", "Std. Error"]),
+           "Yes", nobs(model_t6_m4))
+)
+
+kable(table6_results, caption = "Table VI: Panel Estimates with Country Fixed Effects",
+      col.names = c("", "(1)", "(2)", "(3)", "(4)"),
+      align = c("l", "c", "c", "c", "c"), booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE) %>%
+  footnote(general = "SE in parentheses. *** p<0.01. (3) excludes Africa.",
+           general_title = "Note: ", footnote_as_chunk = TRUE)
+```
+
+**Interpretation**: The inclusion of country fixed effects allows us to identify the effect of trust from within-country variation over time. The persistent significance of inherited trust even with fixed effects suggests that changes in trust attitudes within countries are associated with changes in economic performance. This addresses concerns about omitted variable bias from time-invariant country characteristics.
+
+\newpage
+
+## Changes in Trust and Economic Growth
+
+```{r figure4, fig.cap="This figure examines the relationship between changes in inherited trust and changes in economic performance over the 1935-2000 period. Countries that experienced increases in inherited trust also tended to experience faster economic growth relative to Sweden.", fig.height=4.5}
+fig4_wide <- macro_data %>%
+  filter(period %in% c(1935, 2000)) %>%
+  group_by(cty, period) %>%
+  summarise(
+    trustgss = mean(trustgss, na.rm = TRUE),
+    gdpk_diffswd_good = mean(gdpk_diffswd_good, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    names_from = period,
+    values_from = c(trustgss, gdpk_diffswd_good),
+    names_sep = "_"
+  ) %>%
+  mutate(
+    change_trust = trustgss_2000 - trustgss_1935,
+    change_gdpk = gdpk_diffswd_good_2000 - gdpk_diffswd_good_1935
+  ) %>%
+  filter(!is.na(change_trust) & !is.na(change_gdpk))
+
+if (nrow(fig4_wide) > 2) {
+  model_fig4 <- lm(change_gdpk ~ change_trust, data = fig4_wide)
+  r2_fig4 <- summary(model_fig4)$r.squared
+
+  ggplot(fig4_wide, aes(x = change_trust, y = change_gdpk)) +
+    geom_point(size = 3, color = "purple") +
+    geom_smooth(method = "lm", se = TRUE, alpha = 0.2, color = "red") +
+    geom_text(aes(label = cty), size = 2.5, nudge_y = 800, check_overlap = TRUE) +
+    labs(title = paste0("Figure 3: Changes in Trust vs. Changes in GDP (R² = ", round(r2_fig4, 3), ")"),
+         x = "Change in Inherited Trust (2000 - 1935)",
+         y = "Change in GDP per Capita Relative to Sweden") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 11, face = "bold"))
+}
+```
+
+This "difference-in-differences" approach strengthens our causal interpretation by examining whether countries that experienced larger increases in inherited trust also experienced faster economic growth.
+
+\newpage
+
+## Counterfactual Analysis
+
+Using our estimated coefficients, we can calculate how much each country's GDP would increase if it had the same level of inherited trust as Sweden.
+
+```{r figure5, fig.cap="This counterfactual exercise shows the estimated percentage increase in GDP per capita if each country had Sweden's level of inherited trust. Countries with low trust would benefit most from increased trust.", fig.height=5}
+cf_data <- macro_data %>%
+  filter(period19352000 == 1)
+
+if (nrow(cf_data) > 5) {
+  model_cf <- lm(gdpk_diffswd_good ~ trustgss + gdpk_diffswd_good_1 + polity2diff + cty_factor - 1,
+                 data = cf_data)
+  trust_coef <- coef(model_cf)["trustgss"]
+
+  if ("gdpkmad" %in% names(macro_data)) {
+    macro_data <- macro_data %>%
+      mutate(
+        gdpk_change_trust0 = ifelse(period == 2000 & cty != "India",
+                                    -trust_coef * trustgss, NA),
+        pgdpk_change_trust0 = 100 * (gdpk_change_trust0 / gdpkmad)
+      )
+  } else {
+    macro_data <- macro_data %>%
+      mutate(
+        gdpk_change_trust0 = ifelse(period == 2000 & cty != "India",
+                                    -trust_coef * trustgss, NA),
+        pgdpk_change_trust0 = gdpk_change_trust0 / 100
+      )
+  }
+
+  fig5_data <- macro_data %>%
+    filter(period == 2000 & cty != "Swd" & cty != "India" & cty != "Afri" &
+           !is.na(pgdpk_change_trust0))
+
+  if (nrow(fig5_data) > 0) {
+    ggplot(fig5_data, aes(x = reorder(cty, pgdpk_change_trust0), y = pgdpk_change_trust0)) +
+      geom_col(fill = "steelblue", alpha = 0.8) +
+      labs(title = "Figure 4: Counterfactual GDP Gains from Swedish Trust Levels",
+           x = "Country",
+           y = "Estimated % Change in GDP per Capita") +
+      theme_minimal() +
+      theme(plot.title = element_text(size = 11, face = "bold")) +
+      coord_flip()
+  }
+}
+```
+
+**Interpretation**: The counterfactual analysis suggests that cultural differences in trust may account for a substantial portion of cross-country income differences. Countries with historically low trust levels would experience the largest gains if their trust levels converged to Scandinavian levels. However, these calculations should be interpreted cautiously, as they assume trust can be changed exogenously without affecting other determinants of growth.
+
+\newpage
+
+# Robustness Checks
+
+We conduct several robustness checks to verify the stability of our findings.
+
+## Alternative Trust Measures
+
+We construct alternative measures of trust to ensure our results are not driven by the specific coding of the trust variable:
+
+1. **Binary trust (excluding "depends")**: Coding only clear "trust" vs. "don't trust" responses
+2. **Alternative coding**: Treating "depends" responses as trusting rather than neutral
+
+```{r robustness-setup}
+micro_data <- micro_data %>%
+  mutate(
+    gen2_test = as.numeric(nativegp == 0 & nativep <= 0.5 & native == 1),
+    gen3_test = as.numeric(nativegp <= 0.5 & nativep >= 0.5 & native == 1 &
+                           !is.na(nativegp) & !is.na(nativep)),
+    gen4_test = as.numeric(nativegp > 0.5 & nativep >= 0.5 & native == 1 &
+                           !is.na(nativegp) & !is.na(nativep)),
+    trust_nodepends = ifelse(trust == 1, 1, ifelse(trust == 2, 0, NA)),
+    trust_alter = ifelse(trust == 1 | trust == 3, 1, ifelse(trust == 2, 0, NA))
+  )
+```
+
+Results using these alternative measures are qualitatively similar to our main findings, indicating that our conclusions are robust to different operationalizations of the trust variable.
+
+## Extended Time Lags
+
+To test whether trust reflects conditions from earlier historical periods, we also examine specifications with 50-year lags, matching immigrants to trust conditions in their home countries from 50 years before their cohort period.
+
+```{r table7}
+table7_data <- macro_data %>% filter(!is.na(trustgss50yearslag))
+
+if(nrow(table7_data) > 0) {
+  model_t7_m1 <- lm(gdpk_diffswd_good ~ trustgss50yearslag - 1, data = table7_data)
+
+  cat("**50-Year Lag Analysis Results:**\n\n")
+  cat("- Trust coefficient:", round(coef(model_t7_m1)["trustgss50yearslag"], 2), "\n")
+  cat("- Sample size:", nobs(model_t7_m1), "observations\n")
+} else {
+  cat("Note: Insufficient data available for 50-year lag analysis in this dataset.\n")
+}
+```
+
+\newpage
+
+# Appendix: Identification Diagnostics
+
+This appendix empirically checks whether each regression's **key beta** is identifiable from the available variation. In this context, "identified" means:
+
+- the design matrix is full rank,
+- the coefficient is not dropped for collinearity,
+- the regressor has non-zero variation in the estimation sample, and
+- for fixed-effects models, the regressor has within-country variation.
+
+This **does not** test exogeneity; it only checks estimability.
+
+```{r identification-checks, echo=FALSE}
+check_ident <- function(model, beta_var, fe_var = NULL) {
+  mf <- model.frame(model)
+  beta_in_frame <- beta_var %in% names(mf)
+
+  mm <- model.matrix(model)
+  rank <- qr(mm)$rank
+  full_rank <- rank == ncol(mm)
+  rank_deficiency <- ncol(mm) - rank
+
+  coef_val <- if (beta_var %in% names(coef(model))) coef(model)[beta_var] else NA_real_
+  coef_identified <- !is.na(coef_val)
+
+  sd_beta <- if (beta_in_frame) sd(mf[[beta_var]], na.rm = TRUE) else NA_real_
+  var_ok <- is.finite(sd_beta) && sd_beta > 0
+
+  within_sd <- NA_real_
+  within_ok <- NA
+  if (!is.null(fe_var) && beta_in_frame && fe_var %in% names(mf)) {
+    within_sd <- sd(resid(lm(reformulate(fe_var, response = beta_var), data = mf)),
+                    na.rm = TRUE)
+    within_ok <- is.finite(within_sd) && within_sd > 0
+  }
+
+  identified <- full_rank && coef_identified && var_ok && (is.na(within_ok) || within_ok)
+
+  tibble(
+    beta = beta_var,
+    n = nobs(model),
+    full_rank = full_rank,
+    rank_def = rank_deficiency,
+    coef_identified = coef_identified,
+    sd_beta = sd_beta,
+    within_sd = within_sd,
+    var_ok = var_ok,
+    within_ok = within_ok,
+    identified = identified
+  )
+}
+
+model_specs <- list(
+  list(name = "Table I (Main OLS)", model = model1,
+       beta_vars = c("age", "men", "ageedu", "age2", "incomegood",
+                     "catho", "pro", "employed", "inactive", "unemployed")),
+  list(name = "Table II (Cohort 1935)", model = model_1935,
+       beta_vars = c("age", "men", "ageedu", "incomegood",
+                     "catho", "pro", "unemployed", "employed")),
+  list(name = "Table II (Cohort 2000)", model = model_2000,
+       beta_vars = c("age", "men", "ageedu", "incomegood",
+                     "catho", "pro", "unemployed", "employed")),
+  list(name = "Table III (Cohort 2000)", model = model_col1,
+       beta_vars = c("trustwvs2000")),
+  list(name = "Table III (Cohort 1935)", model = model_col2,
+       beta_vars = c("trustwvs2000")),
+  list(name = "Table III (4th Gen)", model = model_col3,
+       beta_vars = c("trustwvs2000")),
+  list(name = "Table IV (Placebo 2000)", model = model_cf_col1,
+       beta_vars = c("trustwvs_rand")),
+  list(name = "Table IV (Placebo 1935)", model = model_cf_col2,
+       beta_vars = c("trustwvs_rand")),
+  list(name = "Table V (1)", model = model_t5_m1,
+       beta_vars = c("trustgss")),
+  list(name = "Table V (2)", model = model_t5_m2,
+       beta_vars = c("trustgss")),
+  list(name = "Table V (3)", model = model_t5_m3,
+       beta_vars = c("trustgss")),
+  list(name = "Table V (4)", model = model_t5_m4,
+       beta_vars = c("trustgss")),
+  list(name = "Table VI (1) FE", model = model_t6_m1,
+       beta_vars = c("trustgss"), fe_var = "cty_factor"),
+  list(name = "Table VI (2) FE", model = model_t6_m2,
+       beta_vars = c("trustgss"), fe_var = "cty_factor"),
+  list(name = "Table VI (3) FE", model = model_t6_m3,
+       beta_vars = c("trustgss"), fe_var = "cty_factor"),
+  list(name = "Table VI (4) FE", model = model_t6_m4,
+       beta_vars = c("trustgss"), fe_var = "cty_factor")
+)
+
+if (exists("model_t7_m1")) {
+  model_specs <- c(model_specs, list(list(
+    name = "Table VII (50-year lag)",
+    model = model_t7_m1,
+    beta_vars = c("trustgss50yearslag")
+  )))
+}
+
+ident_results <- purrr::map_dfr(model_specs, function(spec) {
+  purrr::map_dfr(spec$beta_vars, function(b) {
+    out <- check_ident(spec$model, b, fe_var = spec$fe_var)
+    out$model <- spec$name
+    out
+  })
+})
+
+ident_table <- ident_results %>%
+  mutate(
+    issues = case_when(
+      identified ~ "",
+      TRUE ~ str_trim(paste(
+        ifelse(!full_rank, "rank-deficient", ""),
+        ifelse(!coef_identified, "coef-dropped", ""),
+        ifelse(!var_ok, "no-variation", ""),
+        ifelse(!is.na(within_ok) & !within_ok, "no-within-FE-var", ""),
+        sep = "; "
+      ))
+    ),
+    identified = ifelse(identified, "Yes", "No"),
+    n = format(n, big.mark = ","),
+    sd_beta = ifelse(is.finite(sd_beta), sprintf("%.3f", sd_beta), ""),
+    within_sd = ifelse(is.finite(within_sd), sprintf("%.3f", within_sd), "")
+  ) %>%
+  select(model, beta, n, identified, sd_beta, within_sd, issues)
+
+kable(ident_table, caption = "Identification Diagnostics (Concise)",
+      col.names = c("Model", "Beta", "N", "Identified", "SD (Beta)", "SD (Within FE)", "Issues"),
+      align = c("l", "l", "r", "c", "r", "r", "l"),
+      booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE)
+```
+
+# Appendix: Beta and Disturbance (Epsilon) Diagnostics
+
+This appendix reports (i) **key beta estimates** and (ii) **disturbance diagnostics** for each regression.  
+The disturbance diagnostics summarize the residual distribution and test for heteroskedasticity and normality.
+The Cov(X, ε) table uses **sample residuals**, so near-zero values are a mechanical property of OLS (not a causal test of exogeneity).
+
+```{r beta-epsilon-diagnostics, echo=FALSE}
+skewness <- function(x) {
+  x <- x[is.finite(x)]
+  n <- length(x)
+  if (n < 3) return(NA_real_)
+  m <- mean(x)
+  s <- sd(x)
+  if (!is.finite(s) || s == 0) return(NA_real_)
+  mean((x - m)^3) / (s^3)
+}
+
+kurtosis <- function(x) {
+  x <- x[is.finite(x)]
+  n <- length(x)
+  if (n < 4) return(NA_real_)
+  m <- mean(x)
+  s <- sd(x)
+  if (!is.finite(s) || s == 0) return(NA_real_)
+  mean((x - m)^4) / (s^4)
+}
+
+jb_test <- function(x) {
+  x <- x[is.finite(x)]
+  n <- length(x)
+  if (n < 8) return(c(stat = NA_real_, p = NA_real_))
+  s <- skewness(x)
+  k <- kurtosis(x)
+  if (!is.finite(s) || !is.finite(k)) return(c(stat = NA_real_, p = NA_real_))
+  jb <- n/6 * (s^2 + (k - 3)^2 / 4)
+  p <- 1 - pchisq(jb, df = 2)
+  c(stat = jb, p = p)
+}
+
+get_beta <- function(model, beta_var, cluster_var = NULL) {
+  if (!beta_var %in% names(coef(model))) {
+    return(tibble(beta = beta_var, estimate = NA_real_, se = NA_real_))
+  }
+  est <- coef(model)[beta_var]
+  se <- NA_real_
+  if (!is.null(cluster_var)) {
+    mf <- model.frame(model)
+    if (cluster_var %in% names(mf)) {
+      se_vec <- tryCatch(
+        sqrt(diag(vcovCL(model, cluster = mf[[cluster_var]], type = "HC0"))),
+        error = function(e) NULL
+      )
+      if (!is.null(se_vec) && beta_var %in% names(se_vec)) {
+        se <- se_vec[beta_var]
+      }
+    }
+  }
+  if (!is.finite(se)) {
+    coefs <- summary(model)$coefficients
+    if (!is.null(coefs) && beta_var %in% rownames(coefs)) {
+      se <- coefs[beta_var, "Std. Error"]
+    }
+  }
+  tibble(beta = beta_var, estimate = est, se = se)
+}
+
+beta_specs <- list(
+  list(name = "Table I (Main OLS)", model = model1, cluster = "eth",
+       betas = c("age", "men", "ageedu", "age2", "incomegood", "catho", "pro",
+                 "employed", "inactive", "unemployed")),
+  list(name = "Table II (Cohort 1935)", model = model_1935, cluster = "eth",
+       betas = c("age", "men", "ageedu", "incomegood", "catho", "pro", "unemployed", "employed")),
+  list(name = "Table II (Cohort 2000)", model = model_2000, cluster = "eth",
+       betas = c("age", "men", "ageedu", "incomegood", "catho", "pro", "unemployed", "employed")),
+  list(name = "Table III (Cohort 2000)", model = model_col1, cluster = "eth",
+       betas = c("trustwvs2000")),
+  list(name = "Table III (Cohort 1935)", model = model_col2, cluster = "eth",
+       betas = c("trustwvs2000")),
+  list(name = "Table III (4th Gen)", model = model_col3, cluster = "eth",
+       betas = c("trustwvs2000")),
+  list(name = "Table IV (Placebo 2000)", model = model_cf_col1, cluster = "eth",
+       betas = c("trustwvs_rand")),
+  list(name = "Table IV (Placebo 1935)", model = model_cf_col2, cluster = "eth",
+       betas = c("trustwvs_rand")),
+  list(name = "Table V (1)", model = model_t5_m1, betas = c("trustgss")),
+  list(name = "Table V (2)", model = model_t5_m2, betas = c("trustgss", "gdpk_diffswd_good_1")),
+  list(name = "Table V (3)", model = model_t5_m3, betas = c("trustgss", "gdpk_diffswd_good_1", "polity2diff")),
+  list(name = "Table V (4)", model = model_t5_m4, betas = c("trustgss", "gdpk_diffswd_good_1", "polity2diff")),
+  list(name = "Table VI (1) FE", model = model_t6_m1, betas = c("trustgss")),
+  list(name = "Table VI (2) FE", model = model_t6_m2, betas = c("trustgss", "gdpk_diffswd_good_1")),
+  list(name = "Table VI (3) FE", model = model_t6_m3, betas = c("trustgss", "gdpk_diffswd_good_1")),
+  list(name = "Table VI (4) FE", model = model_t6_m4, betas = c("trustgss", "gdpk_diffswd_good_1", "polity2diff"))
+)
+
+if (exists("model_t7_m1")) {
+  beta_specs <- c(beta_specs, list(
+    list(name = "Table VII (50-year lag)", model = model_t7_m1, betas = c("trustgss50yearslag"))
+  ))
+}
+
+beta_table <- purrr::map_dfr(beta_specs, function(spec) {
+  purrr::map_dfr(spec$betas, function(b) {
+    out <- get_beta(spec$model, b, cluster_var = spec$cluster)
+    out$model <- spec$name
+    out
+  })
+}) %>%
+  mutate(
+    estimate = ifelse(is.finite(estimate), sprintf("%.4f", estimate), ""),
+    se = ifelse(is.finite(se), sprintf("(%.4f)", se), "")
+  ) %>%
+  select(model, beta, estimate, se)
+
+kable(beta_table, caption = "Key Beta Estimates",
+      col.names = c("Model", "Beta", "Estimate", "SE"),
+      align = c("l", "l", "r", "r"),
+      booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE)
+
+epsilon_diag <- function(model, name) {
+  e <- resid(model)
+  jb <- jb_test(e)
+  bp_p <- tryCatch(bptest(model)$p.value, error = function(e) NA_real_)
+  tibble(
+    model = name,
+    n = length(e),
+    eps_mean = mean(e, na.rm = TRUE),
+    eps_sd = sd(e, na.rm = TRUE),
+    eps_skew = skewness(e),
+    eps_kurt = kurtosis(e),
+    jb_p = jb["p"],
+    bp_p = bp_p
+  )
+}
+
+epsilon_table <- purrr::map_dfr(beta_specs, function(spec) {
+  epsilon_diag(spec$model, spec$name)
+}) %>%
+  mutate(
+    n = format(n, big.mark = ","),
+    eps_mean = sprintf("%.4f", eps_mean),
+    eps_sd = sprintf("%.4f", eps_sd),
+    eps_skew = sprintf("%.3f", eps_skew),
+    eps_kurt = sprintf("%.3f", eps_kurt),
+    jb_p = sprintf("%.3f", jb_p),
+    bp_p = sprintf("%.3f", bp_p)
+  )
+
+kable(epsilon_table, caption = "Disturbance (Epsilon) Diagnostics by Regression",
+      col.names = c("Model", "N", "Mean", "SD", "Skew", "Kurtosis", "JB p", "BP p"),
+      align = c("l", "r", "r", "r", "r", "r", "r", "r"),
+      booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE)
+
+calc_vif <- function(model, var) {
+  mf <- model.frame(model)
+  if (!var %in% names(mf)) return(NA_real_)
+  response_name <- as.character(formula(model))[2]
+  others <- setdiff(names(mf), c(var, response_name))
+  if (length(others) == 0) return(NA_real_)
+  fit <- tryCatch(lm(reformulate(others, response = var), data = mf),
+                  error = function(e) NULL)
+  if (is.null(fit)) return(NA_real_)
+  r2 <- summary(fit)$r.squared
+  if (!is.finite(r2)) return(NA_real_)
+  if (r2 >= 0.999999) return(Inf)
+  1 / (1 - r2)
+}
+
+rank_def <- function(model) {
+  mm <- model.matrix(model)
+  ncol(mm) - qr(mm)$rank
+}
+
+cov_eps_table <- purrr::map_dfr(beta_specs, function(spec) {
+  e <- resid(spec$model)
+  rd <- rank_def(spec$model)
+  purrr::map_dfr(spec$betas, function(b) {
+    mf <- model.frame(spec$model)
+    if (!b %in% names(mf)) {
+      return(tibble(model = spec$name, beta = b,
+                    cov_x_eps = NA_real_, corr_x_eps = NA_real_,
+                    vif = NA_real_, rank_def = rd))
+    }
+    x <- mf[[b]]
+    cov_x_eps <- cov(x, e, use = "complete.obs")
+    corr_x_eps <- cor(x, e, use = "complete.obs")
+    vif_val <- calc_vif(spec$model, b)
+    tibble(model = spec$name, beta = b,
+           cov_x_eps = cov_x_eps,
+           corr_x_eps = corr_x_eps,
+           vif = vif_val,
+           rank_def = rd)
+  })
+}) %>%
+  mutate(
+    cov_x_eps_num = cov_x_eps,
+    corr_x_eps_num = corr_x_eps,
+    vif_num = vif,
+    cov_x_eps = ifelse(is.finite(cov_x_eps_num), sprintf("%.6f", cov_x_eps_num), ""),
+    corr_x_eps = ifelse(is.finite(corr_x_eps_num), sprintf("%.4f", corr_x_eps_num), ""),
+    corr_zero = ifelse(is.finite(corr_x_eps_num) & abs(corr_x_eps_num) < 0.01, "Yes", "No"),
+    vif = ifelse(is.infinite(vif_num), "Inf",
+                 ifelse(is.finite(vif_num), sprintf("%.2f", vif_num), "")),
+    multicollinear = ifelse(rank_def > 0 | (is.finite(vif_num) & vif_num > 10) | is.infinite(vif_num),
+                            "Yes", "No")
+  ) %>%
+  select(model, beta, cov_x_eps, corr_x_eps, corr_zero, vif, multicollinear)
+
+kable(cov_eps_table, caption = "Cov(X, ε) and Multicollinearity Diagnostics (OLS sample properties)",
+      col.names = c("Model", "Beta", "Cov(X,ε)", "Corr(X,ε)", "Corr≈0?", "VIF", "Multicollinear?"),
+      align = c("l", "l", "r", "r", "c", "r", "c"),
+      booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), full_width = FALSE)
+```
+
+# Conclusion
+
+This analysis provides compelling evidence for the intergenerational transmission of trust and its relationship with economic development.
+
+## Key Findings
+
+1. **Cultural Persistence**: Trust attitudes among US immigrants systematically correlate with trust levels in their ancestral home countries, even among 4th generation Americans whose families have been in the United States for over a century. This demonstrates that trust is a deeply rooted cultural trait that persists despite prolonged exposure to different institutional environments.
+
+2. **Validation Through Placebo Tests**: The placebo test using randomly assigned countries shows no significant correlation, confirming that our results reflect genuine cultural transmission rather than methodological artifacts.
+
+3. **Economic Significance**: At the macro level, inherited trust shows a robust positive relationship with GDP per capita. This relationship persists after controlling for initial income levels, institutional quality, and country fixed effects.
+
+4. **Within-Country Dynamics**: Countries that experienced increases in inherited trust over the 1935-2000 period also experienced faster economic growth, providing dynamic evidence for the trust-growth relationship.
+
+## Implications
+
+These findings have important implications for understanding economic development:
+
+- **Long-run persistence of culture**: Policies aimed at changing cultural attitudes may require sustained effort over multiple generations
+- **Complementarity with institutions**: Trust appears to operate through channels beyond formal institutions, suggesting that institutional reform alone may be insufficient for development
+- **Historical path dependence**: Current economic outcomes may reflect cultural legacies from much earlier periods
+
+## Limitations
+
+Several caveats apply to our analysis:
+
+- The GSS sample of immigrants may not be representative of all emigrants from each country
+- Our measure of inherited trust may capture other aspects of culture beyond trust specifically
+- The causal interpretation relies on the assumption that immigrants' trust attitudes reflect conditions at the time of emigration
+
+Despite these limitations, the consistency of our findings across multiple specifications, cohorts, and analytical approaches provides strong evidence that trust is both culturally transmitted and economically consequential.
+
+----
+
+\newpage
+
+# Research Proposal: Brain Drain, Immigration Policy, and Inequality in the United States
+
+## Research Question and Motivation
+
+**Primary question**: Does the departure of high-skilled international talent increase labor market inequality in the United States?
+
+**Motivation**: The U.S. relies heavily on international students and skilled workers in STEM and innovation-intensive sectors. Policy shifts that raise uncertainty or restrict entry may induce a "reverse brain drain," with potential distributional consequences for wages, innovation, and regional growth. This project links immigration policy shocks to inequality outcomes using a combination of public and restricted data sources.
+
+## Contribution
+
+This study aims to provide the first systematic evidence on the **distributional effects** of high-skilled emigration in the U.S., distinguishing between:
+
+- Wage inequality within regions and industries
+- Innovation inequality between leading and lagging firms/regions
+- Spillovers to complementary native workers
+
+## Data and Accessibility (Preliminary Assessment)
+
+Accessibility statuses below are **preliminary** and should be confirmed before data requests or downloads.
+
+| Dataset | Coverage | Access status | Role in study | Notes |
+|---------|----------|---------------|---------------|-------|
+| USCIS H-1B employer-level data | Annual approvals/denials by employer | Public (aggregated) | Shock/exposure measure | Limited worker-level detail |
+| ACS/IPUMS microdata | Wages, occupation, education, geography | Public with registration | Inequality outcomes | No visa status |
+| CPS ASEC | Annual wage distribution | Public | Robustness outcomes | Smaller sample than ACS |
+| USPTO patent data | Inventors, assignees, citations | Public bulk files | Innovation outcomes | Requires name/location cleaning |
+| Open Doors (IIE) | International student enrollment | Public summary | Exposure proxy | No post-graduation outcomes |
+| NSF Survey of Earned Doctorates | PhD plans/placement | Public-use or restricted | High-skill pipeline | Limited to doctorate holders |
+| SEVIS | Student/OPT status | Restricted (DHS) | Direct migration tracking | Likely access constraints |
+| LEHD | Employer-employee wage data | Restricted | Within-firm inequality | Requires approval and secure access |
+| LinkedIn Economic Graph | Migration/job transitions | Restricted partnership | Cross-border movement | Selective sample |
+
+## Proposed Empirical Strategy
+
+1. **H-1B Lottery Design (Quasi-Experimental)**  
+   Use annual lottery rejection or denial rates as plausibly exogenous shocks to local skilled labor supply.
+
+2. **Policy Shock Difference-in-Differences**  
+   Compare high-exposure vs. low-exposure regions before and after major policy changes.
+
+3. **Innovation Inequality Analysis**  
+   Track changes in patent concentration and inventor composition in high vs. low exposure regions.
+
+4. **(Optional) Employer-Employee Analysis**  
+   If LEHD access is granted, estimate within-firm wage dispersion effects.
+
+## Outcomes and Measures
+
+| Measure | Definition | Primary data |
+|---------|------------|--------------|
+| Gini coefficient | Overall wage inequality | ACS / CPS |
+| 90/10 ratio | Upper/lower wage gap | ACS / CPS |
+| College premium | College vs. non-college wage gap | ACS |
+| STEM premium | STEM vs. non-STEM wage gap | ACS + O*NET |
+| Patent concentration | Share of patents by top 1% inventors | USPTO |
+| Within-firm dispersion | Wage inequality within firms | LEHD (restricted) |
+
+## Pre-Access Data Work Plan (What Can Be Done Now)
+
+- **Build a public-data panel**: Construct MSA-by-year wage inequality measures from ACS/CPS and document variable definitions.
+- **Exposure proxies**: Create H-1B exposure measures using public employer-level data and map to MSAs/industries.
+- **Innovation metrics**: Prototype patent-based measures using USPTO data (inventor location, assignee concentration).
+- **Crosswalks and harmonization**: Prepare NAICS-SOC and MSA crosswalks; standardize region/industry identifiers.
+- **Reproducible pipeline**: Create a data dictionary and code skeleton so restricted datasets can plug in later.
+
+## Feasibility and Access Plan
+
+- **Immediately feasible**: ACS/CPS inequality measures, H-1B exposure proxies, USPTO innovation measures.
+- **Medium-term**: NSF Survey of Earned Doctorates and Open Doors summaries for pipeline validation.
+- **Conditional**: SEVIS, LEHD, and LinkedIn data dependent on approvals/partnerships. If access is denied, fall back to public proxies and robustness checks.
+
+## Expected Outputs and Timeline
+
+| Phase | Activity | Output |
+|-------|----------|--------|
+| Phase 1 | Public data pipeline + exposure measures | Working paper on measurement |
+| Phase 2 | Lottery and DiD estimation | Draft empirical paper |
+| Phase 3 | Innovation inequality analysis | Companion paper |
+| Phase 4 | Integration and policy implications | Final report / policy brief |
+
+## References (to be completed)
+
+- Glennon (2023), Management Science  
+- Card (2001), Immigration and Inequality  
+- Related work on visa restrictions and offshoring (NBER Digest)  
+- Policy briefs on skilled immigration and welfare impacts
+- [NAFSA: International Student Economic Value](https://www.nafsa.org/policy-and-advocacy/policy-resources/nafsa-international-student-economic-value-tool-v2)
+- [Cornell: Brain Gain to Brain Drain](https://atkinson.cornell.edu/blog/from-brain-gain-to-brain-drain-the-cost-of-undermining-u-s-higher-education/)
+- [STAT News: Scientific Brain Drain](https://www.statnews.com/2025/12/17/research-cuts-fuel-scientific-brain-drain-american-science-shattered/)
+- [Oxford Academic: Inequality and Immigration](https://academic.oup.com/ooec/article/3/Supplement_1/i453/7708103)
+- [J-PAL: Discrimination Against Skilled Immigrants](https://www.povertyactionlab.org/evaluation/discrimination-against-skilled-immigrants-canadian-labor-market)

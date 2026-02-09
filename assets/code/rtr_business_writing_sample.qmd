@@ -1,0 +1,227 @@
+---
+title: "Right to Repair, Trade-Ins, and the Repair Market: Evidence from Massachusetts"
+author: "Minjae Seo"
+format:
+  pdf:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    documentclass: article
+    geometry: margin=1in
+---
+
+\newpage
+
+## Abstract
+
+This paper evaluates whether the Massachusetts Right to Repair law changed household vehicle behavior and the repair shop market. Using CES Interview microdata and a state-year panel of repair shop outcomes, I document post-policy shifts in ownership, purchases, and disposal patterns, and then test whether those shifts align with difference-in-differences estimates. Descriptively, Massachusetts shows a decline in vehicle ownership and purchase frequency after 2014, alongside a rise in trade-in shares. However, household-level treatment effects are mostly weak, and repair shop outcomes do not exhibit a sharp break at the policy date. The findings suggest that observed changes may reflect broader trends or persistent state differences, rather than a clean causal effect of the law.
+
+## Research questions and hypotheses
+
+This writing sample connects three strands of evidence: a theoretical trade-in framework for durable goods, state-level repair shop outcomes, and household-level vehicle behavior. The trade-in framework emphasizes how reliability and deterioration shape incentives to trade in versus hold a vehicle, and how trade-ins can mitigate lemon problems in the used market. The Massachusetts policy environment offers a setting where repair access could alter effective reliability and maintenance costs, potentially changing purchase and disposal behavior.
+
+Key questions informed by the trade-in literature are whether improved reliability changes trade-in incentives, whether used-good trade rises with reliability and deterioration, and how new and used markets co-exist when trade-ins mitigate adverse selection. These predictions motivate the empirical focus on ownership, purchase frequency, disposal methods, and trade-in behavior.
+
+Improved reliability (or lower effective deterioration) may change trade-in incentives. The volume of used-good trade may increase with reliability and deterioration. New and used markets co-exist when trade-ins mitigate the lemon problem, which can affect both pricing and replacement timing.
+
+The policy question is whether Right to Repair changed the composition of repair shops and household vehicle outcomes (ownership, purchases, trade-ins). The analysis treats Massachusetts as the treated group and other states as controls, with post periods defined around the policy timing to allow for gradual adjustment.[^1]
+
+## Data
+
+**Repair shop outcomes (state-year, 1994-2018).**
+
+I use outcomes `tot_repair_shops`, `small_shops`, and `small_shops_pct` with covariates `drivers`, `vehicles`, and `median_income`. The unit of observation is state-year. Treatment is Massachusetts and the post period is year > 2011, which aligns with the policy timing used in the state-year analysis.[^2]
+
+**Household vehicle outcomes (CE Interview, 2008-2021).**
+
+The household analysis uses the Bureau of Labor Statistics Consumer Expenditure Survey (CES) Interview microdata. I construct variables based on the CES data dictionary and extract vehicle-related fields from FMLI (`VEHQ` total number of owned vehicles), OVB (purchase details and trade-in measures such as `NETPURX` and `QTRADEX`), and OVC (disposal method `VEHDISP` and sale prices `SALEX`). The descriptive window is 2008-2021, while identification focuses on 2010-2019 to avoid the 2008 and 2020 macro shocks.[^3]
+
+**Additional sources for future extension.**
+
+I plan to integrate resale benchmarks (deterioration) and reliability measures to map theory predictions into the data and interpret trade-in incentives more directly.
+
+## Visualizations
+
+The following figures summarize the repair shop panel and the policy timing. The dashed line marks 2012 (the post period start used in the repair shop analysis).
+
+![Small repair shops share over time (Massachusetts vs. other states).](figures/repair_shops_small_share_trend.png)
+
+![Total repair shops over time (Massachusetts vs. other states).](figures/repair_shops_total_trend.png)
+
+![Event study: small shops share (Massachusetts relative to other states).](figures/repair_shops_event_study_small_share.png)
+
+## Empirical strategy
+
+**Repair shop DiD (state-year).**
+
+For outcome $Y_{st}$:
+
+$$
+Y_{st} = \beta_0 + \beta_1 \text{Treatment}_s + \beta_2 \text{Post}_t + \beta_3 (\text{Treatment}_s \times \text{Post}_t) + X_{st}'\gamma + \epsilon_{st}
+$$
+
+**Pre-trend check.**
+
+On the pre-policy period (1994-2011), I estimate $Y_{st}$ on `year`, `treat`, and `treat x year` to assess parallel trends.
+
+**Household outcomes (CE Interview).**
+
+Trade-in choice (logit), purchase counts (OLS/Poisson), and ownership counts (OLS/Poisson) are estimated with Massachusetts as the treated group and post-2014 as the post period.
+
+**Identification assumptions.**
+
+The DiD design requires parallel trends between Massachusetts and other states in the absence of the policy. I evaluate this with pre-trend interactions and a lead-lag event study. I also compare pre/post mean differences to assess whether results are driven by baseline level gaps rather than policy timing.
+
+## Results
+
+### Repair shop market: pre/post levels
+
+Table 1 reports pre/post means and the implied DiD mean change.
+
+| Outcome | MA Pre | Control Pre | MA Post | Control Post | DiD (mean) |
+| --- | --- | --- | --- | --- | --- |
+| Total repair shops | 1,812.94 | 1,510.97 | 1,970.43 | 1,578.18 | 90.27 |
+| Small repair shops | 1,351.28 | 1,083.41 | 1,453.57 | 1,099.47 | 86.24 |
+| Small shops (% of total) | 74.57 | 71.47 | 73.77 | 68.58 | 2.09 |
+
+Massachusetts has higher baseline levels than other states; the post-period change is modest in magnitude.
+
+Figure 1 shows that the small-shops share in Massachusetts tracks other states with no sharp break at the policy date. Figure 2 shows a similar pattern for the total number of repair shops, where Massachusetts remains above the control average throughout the sample. These figures reinforce the idea that level differences dominate short-run shifts around the policy timing.
+
+### Repair shop DiD regressions
+
+Table 2 shows DiD estimates without covariates, and Table 3 adds drivers, vehicles, and median income.
+
+Table 2. DiD without covariates (coefficients with standard errors).
+
+| Variable | Total repair shops | Small repair shops | Small shops (% of total) |
+| --- | --- | --- | --- |
+| Treatment | 301.97 (401.85) | 267.87 (294.21) | 3.10 (1.17) |
+| Post | 67.21 (106.34) | 16.06 (77.86) | -2.90 (0.31) |
+| Treatment x Post | 90.27 (759.42) | 86.24 (556.00) | 2.09 (2.22) |
+| N | 1275 | 1275 | 1275 |
+| R^2 | 0.001 | 0.001 | 0.073 |
+
+Table 3. DiD with covariates (coefficients with standard errors).
+
+| Variable | Total repair shops | Small repair shops | Small shops (% of total) |
+| --- | --- | --- | --- |
+| Treatment | 38.08 (101.28) | 86.34 (87.36) | 4.07 (1.13) |
+| Post | -211.81 (32.26) | -170.15 (27.83) | -1.04 (0.36) |
+| Treatment x Post | 299.91 (190.82) | 239.98 (164.60) | 2.71 (2.13) |
+| N | 1275 | 1275 | 1275 |
+| R^2 | 0.937 | 0.913 | 0.147 |
+
+The Treatment x Post estimates are not statistically precise in the baseline models; with covariates the fit improves, but treatment effects remain noisy.
+
+In the covariate specifications, drivers and vehicles absorb substantial cross-state variation, which raises the overall fit but does not yield a consistent treatment effect. This suggests that market scale, rather than policy, explains much of the cross-sectional differences. The lack of precision also reflects that a single treated state limits statistical power in a panel with many controls.
+
+### Pre-trend check (repair shops)
+
+Table 4 reports the pre-period interaction between treatment and year.
+
+| Outcome | Treat x Year (coef) | SE | p-value |
+| --- | --- | --- | --- |
+| Total repair shops | 1.886 | 77.117 | 0.980 |
+| Small repair shops | -1.983 | 56.675 | 0.972 |
+| Small shops (% of total) | -0.111 | 0.226 | 0.622 |
+
+The pre-trend interactions are small and statistically weak, which is consistent with (but does not prove) parallel trends.
+
+The lead-lag plot in Figure 3 presents a more granular view around the policy year. The pre-period coefficients are small, and post-period coefficients are positive but not precise, which aligns with the regression results.
+
+### Household outcomes (CE Interview)
+
+Table 5 summarizes the core household-level DiD estimates from the CE analysis.
+
+| Outcome | Model | Treatment x Post | p-value | N |
+| --- | --- | --- | --- | --- |
+| Trade-in choice | Logit | -0.0080 | 0.972 | 16600 |
+| Purchase count | OLS | -0.0177 | 0.125 | 159513 |
+| Purchase count | Poisson | -0.1678 | 0.125 | 159513 |
+| Vehicle ownership | OLS | -0.0660 | 0.106 | 274330 |
+| Vehicle ownership | Poisson | -0.0446 | 0.050 | 274330 |
+
+The ownership effect is borderline in the Poisson model, while trade-in and purchase effects are not significant.
+
+Because the CE analysis is at the household-transaction level and does not use survey weights in the current version, these estimates should be treated as descriptive rather than definitive causal effects. A weighted specification may change the magnitude of point estimates and standard errors.
+
+## Discussion: tying evidence to trade-in theory
+
+The trade-in framework predicts that higher reliability should reduce trade-in incentives, while used-good volume can still rise with reliability and deterioration. Right to Repair can be interpreted as a reliability improvement, yet the household-level evidence shows an increase in trade-in share after 2012-2014. This suggests either changes in disposal composition rather than trade-in utility, or interacting effects through prices, dealer incentives, or macro conditions. If repair access lowers maintenance costs, households may keep vehicles longer, but when they do replace them, they may still prefer trade-ins because dealer credits reduce search and transaction costs. That pattern would be consistent with higher trade-in shares without a strong logit treatment effect.
+
+One interpretation is that the policy may have shifted the composition of disposal methods without materially changing trade-in incentives, consistent with the logit results. Another is that macro demand or credit conditions around 2014-2016 affected purchases and disposal patterns in ways that mimic policy timing.
+
+## Discrete choice modeling experience
+
+I modeled the trade-in decision as a binary discrete choice at purchase and estimated a logit model with Treatment, Post, and their interaction. I would extend this to a multinomial logit over disposal options (trade-in, sell, gift, scrap), or a nested logit separating the decision to dispose from the disposal channel. This would align closely with the trade-in theory and allow testing substitution patterns across disposal modes. A richer specification could incorporate vehicle age, purchase price, and household income as shifters of the outside option, which would sharpen inference on how policy affects choice probabilities rather than only mean outcomes.
+
+## Limitations and next steps
+
+I would add event-study plots and state-specific trends to sharpen the pre-trend assessment, re-estimate DiD with clustered standard errors and CE survey weights, and implement synthetic control as a robustness check. I would also integrate resale and reliability measures to link repair access, reliability, and trade-in incentives, and rebuild household purchase and disposal panels with stricter missing-data rules to reduce noise in used-vehicle price measures. Finally, exploring heterogeneity by income, vehicle age, or urbanicity may clarify whether the policy impacts specific subgroups more than the average effect suggests.
+
+[^1]: The Massachusetts Right to Repair law was implemented in 2013. For repair shop outcomes I define the post period as 2012 onward to align with the state-year timing used in the panel. For household outcomes I define post as 2014 onward to allow for adoption and adjustment in transactions.
+[^2]: The repair shop panel is a state-year dataset constructed for this project using repair shop counts and state-level controls.
+[^3]: CES Interview microdata and the CES data dictionary are used to define and extract the household vehicle variables.
+
+\newpage
+
+## Appendix Figures
+
+The figures below group all household plots into 2x2 panels. Each panel includes a short interpretation to connect the visual patterns to the main hypotheses.
+
+### A1. Vehicle ownership
+
+![A1a. Mean vehicle ownership per household.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-10-output-2.png>){width=48%} ![A1b. Median vehicle ownership per household.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-11-output-2.png>){width=48%}
+
+![A1c. Share of households with at least one vehicle.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-12-output-2.png>){width=48%} ![A1d. Share of households with at least three vehicles.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-13-output-2.png>){width=48%}
+
+A1a shows Massachusetts has lower mean ownership and a visible decline after 2014. A1b shows a flat median at one vehicle in Massachusetts versus two nationally, indicating a persistent level gap. A1c shows the share of households with at least one vehicle drops after 2015 in Massachusetts while the national share is stable. A1d shows a lower and more volatile share of households with three or more vehicles, consistent with a contraction in multi-vehicle ownership.
+
+### A2. New vehicle purchases and sample diagnostics
+
+![A2a. New car purchase price.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-18-output-2.png>){width=48%} ![A2b. New car purchase price (alternative statistic).](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-19-output-2.png>){width=48%}
+
+![A2c. New car purchase sample diagnostics.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-20-output-2.png>){width=48%} ![A2d. New car purchase sample diagnostics.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-21-output-2.png>){width=48%}
+
+A2a and A2b show that Massachusetts new car prices generally track the national trend but exhibit sharper swings, suggesting volatility rather than a clear policy break. A2c and A2d show meaningful variation in sample quality, implying that extreme movements should be interpreted with caution because missingness and small sample sizes can amplify noise.
+
+### A3. Used vehicle price levels
+
+![A3a. Used car sold price.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-28-output-2.png>){width=48%} ![A3b. Used car sold price (alternative statistic).](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-29-output-2.png>){width=48%}
+
+![A3c. Used car purchase price.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-35-output-2.png>){width=48%} ![A3d. Used car purchase price (alternative statistic).](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-36-output-2.png>){width=48%}
+
+A3a and A3b show sold prices are noisy and sensitive to outliers, with no stable post-policy divergence. A3c and A3d show rising used purchase prices after 2013 in both series, with larger Massachusetts volatility after 2017. The combined evidence suggests broader market dynamics dominate price patterns.
+
+### A4. Used vehicle volume and sample diagnostics
+
+![A4a. Amount of used car purchases.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-37-output-2.png>){width=48%} ![A4b. Used purchase sample diagnostics.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-38-output-2.png>){width=48%}
+
+![A4c. Used purchase sample diagnostics.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-39-output-2.png>){width=48%} ![A4d. Amount of sold records.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-30-output-2.png>){width=48%}
+
+A4a indicates that Massachusetts has fewer used purchases in several years, limiting precision. A4b and A4c highlight missingness and sample fluctuations that can drive the volatility seen in used price series. A4d shows sold records are sparse, reinforcing that sold-price estimates are sensitive to outliers.
+
+### A5. All vehicle purchases and sample diagnostics 
+
+![A5a. Car purchase price (new and used).](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-44-output-2.png>){width=48%} ![A5b. Car purchase price (alternative statistic).](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-45-output-2.png>){width=48%}
+
+![A5c. Sample diagnostics for purchases.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-46-output-2.png>){width=48%} ![A5d. Average number of new purchases per household.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-47-output-2.png>){width=48%}
+
+A5a and A5b show aggregate prices rise nationally and in Massachusetts, with no sustained divergence after the policy year. A5c indicates sample quality varies over time, which may contribute to price volatility. A5d shows purchase frequency in Massachusetts falls below the national series after 2014, consistent with fewer replacement events.
+
+### A6. Disposal composition 
+
+![A6a. Disposal method proportions.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-53-output-2.png>){width=48%} ![A6b. Disposal method proportions.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-54-output-2.png>){width=48%}
+
+![A6c. Disposal method proportions.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-55-output-2.png>){width=48%} ![A6d. Disposal method proportions.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-56-output-2.png>){width=48%}
+
+The disposal composition series show a post-2013 rise in trade-ins and a decline in selling or other methods in Massachusetts. This supports the interpretation that the policy period aligns with a shift in disposal composition rather than a large change in total disposal volume.
+
+### A7. Disposal intensity and trade-ins 
+
+![A7a. Average number of disposals per household.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-52-output-2.png>){width=48%} ![A7b. Median trade-in allowance amount.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-61-output-2.png>){width=48%}
+
+![A7c. Median trade-in allowance amount (alternative statistic).](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-62-output-2.png>){width=48%} ![A7d. Trade-in rate.](<URAP Report Sp 2024_Li Zhang_files/figure-html/cell-63-output-2.png>){width=48%}
+
+A7a shows disposal rates decline after 2014 in both series, with Massachusetts slightly below the national trend after 2016. A7b and A7c show trade-in allowances are volatile and rise sharply in Massachusetts in 2020-2021. A7d shows a higher and more variable trade-in rate in Massachusetts, including a spike around the policy year, consistent with greater reliance on trade-ins rather than direct sales.

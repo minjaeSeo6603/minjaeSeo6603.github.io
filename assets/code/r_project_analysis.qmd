@@ -1,0 +1,283 @@
+---
+title: "The Impact of Advertising Campaigns on Vaccine Uptake and Hesitancy: A Simulation Study"
+author: "Minjae Seo"
+date: "today"
+format:
+  pdf:
+    documentclass: article
+    toc: true
+    number-sections: true
+  html:
+    toc: true
+    df-print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,       # Show code chunks
+  warning = FALSE,    # Hide warnings
+  message = FALSE,    # Hide messages
+  fig.pos = "H",      # Hold figure position in LaTeX
+  out.width = "90%",   # Set default figure width
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 70)
+)
+
+# Attach packages
+library(tidyverse) 
+library(knitr)
+library(stargazer)
+library(broom)
+
+set.seed(123)
+```
+
+# Abstract
+
+*This study simulates a randomized controlled trial to evaluate the potential efficacy of different advertising strategies on COVID-19 vaccine uptake and attitudes. A population of 5,000 individuals was simulated and randomly assigned to one of three groups: a reason-based ad campaign, an emotion-based ad campaign, or a control group. The simulation incorporated demographic variables, baseline vaccine hesitancy, and a minimal treatment effect. Results indicate that both ad campaigns produced a statistically significant, albeit modest, increase in vaccination rates compared to the control group. Furthermore, the analysis explored heterogeneous treatment effects, suggesting that campaign effectiveness may vary across education levels. The findings highlight the utility of simulation in estimating potential intervention effects and underscore the importance of considering both statistical significance and practical effect size in evaluating public health campaigns.*
+
+# Introduction
+
+Vaccine hesitancy remains a significant obstacle to achieving widespread immunity and mitigating the impact of infectious diseases like COVID-19. Public health organizations frequently employ communication campaigns to address this challenge, but the effectiveness of different messaging strategies is a subject of ongoing research. Understanding whether appeals to reason or emotion are more effective, and for whom, is critical for designing impactful and cost-efficient interventions.
+
+This paper presents a simulation study designed to model a hypothetical experiment. The primary objective is to quantify the potential impact of two distinct advertising campaigns—one focusing on reason-based arguments and the other on emotional appeals—on subsequent vaccine uptake and changes in vaccine-related attitudes. By simulating a large-scale randomized controlled trial (RCT), we can create a controlled environment to estimate potential effect sizes and explore how these effects might vary across different segments of the population.
+
+# Methods
+
+## Experimental Design
+
+We designed a parallel randomized controlled trial with three arms. Simulated participants were randomly assigned with equal probability (1:1:1) to one of the following groups:
+
+1.  **Reason-Based Ad Group:** Exposed to an advertising campaign using logical arguments, data, and scientific evidence to encourage vaccination.
+2.  **Emotion-Based Ad Group:** Exposed to a campaign using personal stories, emotional appeals, and community-focused messaging.
+3.  **Control Group:** Received no intervention.
+
+The primary outcomes of interest were (1) vaccine uptake by the end of the study period and (2) the change in a composite vaccine hesitancy score from baseline to endline.
+
+## Data Simulation
+
+A dataset of 5,000 participants was computationally generated. The simulation proceeded in three stages: baseline survey, random assignment, and endline survey. The full simulation and analysis code is presented in the following sections.
+
+### Participant Characteristics and Randomization
+
+A baseline dataset was created to represent a diverse population. Key demographic variables were simulated, and participants were randomly assigned to one of the three experimental groups.
+
+```{r Data-Simulation}
+# Number of participants
+N <- 5000
+participant_id <- 1:N
+
+# Demographics
+age <- round(rnorm(N, mean = 50, sd = 18)); age[age < 18] <- 18; age[age > 90] <- 90
+gender <- sample(c("Male", "Female"), N, replace = TRUE, prob = c(0.49, 0.51))
+race <- sample(c("White", "Black", "Hispanic", "Asian", "Other"), N, replace = TRUE, prob = c(0.60, 0.13, 0.18, 0.06, 0.03))
+income <- sample(c("Low", "Medium", "High"), N, replace = TRUE, prob = c(0.3, 0.4, 0.3))
+education <- sample(c("High School or less", "Some College", "Bachelor's or higher"), N, replace = TRUE, prob = c(0.4, 0.3, 0.3))
+
+# Baseline hesitancy
+hesitancy_q1 <- sample(1:5, N, replace = TRUE, prob = c(0.10, 0.20, 0.25, 0.25, 0.20))
+hesitancy_q2 <- sample(1:5, N, replace = TRUE, prob = c(0.10, 0.20, 0.25, 0.25, 0.20))
+
+baseline <- data.frame(id = participant_id, age, gender, race, income, education, hesitancy_q1, hesitancy_q2)
+
+# Randomization
+groups <- c("Reason Ad", "Emotion Ad", "Control")
+assignment <- data.frame(id = participant_id, group = sample(groups, N, replace = TRUE, prob = c(1/3, 1/3, 1/3)))
+```
+
+### Outcome Simulation
+
+Endline outcomes were simulated assuming a 10% attrition rate (n=4,500). A minimal treatment effect was introduced for the intervention groups. An individual's probability of vaccination was modeled as a function of their baseline hesitancy, with a small additive increase for those in the ad campaign groups (+5% for Reason Ad, +3% for Emotion Ad).
+
+```{r Outcome-Simulation}
+endline_ids <- sample(participant_id, size = 4500, replace = FALSE)
+endline <- data.frame(id = endline_ids) %>%
+  left_join(baseline, by = "id") %>%
+  left_join(assignment, by = "id")
+
+endline$baseline_hesitancy_score <- (endline$hesitancy_q1 + endline$hesitancy_q2) / 2
+base_prob <- function(hes_score) {
+  if (hes_score <= 1) return(0.90)
+  if (hes_score <= 2) return(0.75)
+  if (hes_score <= 3) return(0.60)
+  if (hes_score <= 4) return(0.35)
+  return(0.15)
+}
+endline$base_vacc_prob <- sapply(endline$baseline_hesitancy_score, base_prob)
+
+endline <- endline %>%
+  mutate(vacc_prob = case_when(
+    group == "Reason Ad"  ~ pmin(1, base_vacc_prob + 0.05),
+    group == "Emotion Ad" ~ pmin(1, base_vacc_prob + 0.03),
+    group == "Control"    ~ base_vacc_prob
+  ))
+endline$vaccinated <- rbinom(n = nrow(endline), size = 1, prob = endline$vacc_prob)
+endline <- endline %>%
+  mutate(
+    q1_change = rnorm(n(), mean = case_when(group == "Reason Ad" ~ -0.2, group == "Emotion Ad" ~ -0.1, TRUE ~ 0.0), sd = 0.5),
+    hesitancy_q1_end = pmin(pmax(round(hesitancy_q1 + q1_change), 1), 5),
+    hesitancy_q2_end = pmin(pmax(round(hesitancy_q2 + q1_change), 1), 5)
+  )
+
+analysis_data <- endline %>%
+  select(id, group, vaccinated, hesitancy_q1_end, hesitancy_q2_end) %>%
+  left_join(baseline, by = "id") %>%
+  rename(hesitancy_q1_baseline = hesitancy_q1, hesitancy_q2_baseline = hesitancy_q2,
+         hesitancy_q1_endline = hesitancy_q1_end, hesitancy_q2_endline = hesitancy_q2_end) %>%
+  mutate(hesitancy_score_baseline = (hesitancy_q1_baseline + hesitancy_q2_baseline) / 2,
+         hesitancy_score_endline  = (hesitancy_q1_endline + hesitancy_q2_endline) / 2,
+         attitude_change = hesitancy_score_endline - hesitancy_score_baseline)
+```
+
+### Statistical Analysis Plan
+
+To analyze the binary outcome of vaccine uptake, we used the Chi-squared test for independence and a binomial logistic regression model. To analyze the continuous outcome of attitude change, we used an Analysis of Variance (ANOVA). To explore moderation, we included an interaction term between the treatment group and education level in the logistic regression model.
+
+# Results
+
+## Vaccine Uptake
+
+The vaccination rate was highest in the Reason-Based Ad group, followed by the Emotion-Based Ad group, and lowest in the Control group (see @fig-uptake). A chi-squared test indicated a statistically significant association between group assignment and vaccination outcome ($\chi^2(2)$ = `r round(chisq.test(table(analysis_data$group, analysis_data$vaccinated))$statistic, 2)`, p \< 0.01).
+
+```{r}
+#| label: fig-uptake
+#| fig-cap: "Percentage of participants vaccinated by experimental group. Error bars represent 95% confidence intervals."
+#| fig-width: 6
+#| fig-height: 4
+
+uptake_summary <- analysis_data %>%
+  group_by(group) %>%
+  summarize(
+    n = n(),
+    n_vaccinated = sum(vaccinated),
+    mean = mean(vaccinated)
+  ) %>%
+  mutate(
+    percent_vaccinated = mean * 100,
+    ci_low = mean - 1.96 * sqrt(mean * (1 - mean) / n),
+    ci_high = mean + 1.96 * sqrt(mean * (1 - mean) / n)
+  )
+
+ggplot(uptake_summary, aes(x = fct_reorder(group, percent_vaccinated, .desc=TRUE), y = percent_vaccinated, fill = group)) +
+  geom_col(width = 0.6) +
+  geom_errorbar(aes(ymin = ci_low * 100, ymax = ci_high * 100), width = 0.2) +
+  geom_text(aes(label = sprintf("%.1f%%", percent_vaccinated)), vjust = -1.5) +
+  scale_y_continuous(limits = c(0, 65), expand = c(0, 0)) +
+  labs(y = "Vaccinated (%)", x = "Experimental Group") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none")
+```
+
+A logistic regression model confirmed that both ad campaigns were associated with higher odds of vaccination compared to the control group (see @tbl-logit).
+
+```{r}
+#| label: tbl-logit
+#| tbl-cap: "Logistic Regression of Vaccine Uptake on Ad Group"
+
+logit_model <- glm(vaccinated ~ group, data = analysis_data, family = binomial)
+tidy(logit_model, conf.int = TRUE) %>%
+  kable(
+    digits = 3,
+    col.names = c("Term", "Estimate", "Std. Error", "Statistic", "P-value", "Conf. Low", "Conf. High"),
+    caption = "Logistic regression model predicting vaccination from group assignment."
+  )
+```
+
+## Heterogeneous Effects by Education
+
+A central question in evaluating public health interventions is whether treatment effects vary systematically across population subgroups. To investigate potential heterogeneity in campaign effectiveness by educational attainment, I extended the baseline logistic regression model to include an interaction term between treatment assignment and education level. This specification allows the marginal effect of each advertising campaign to differ across education categories, providing insight into whether certain demographic groups respond more favorably to the interventions.
+
+```{r}
+#| label: setup-interaction
+#| include: false
+
+analysis_data$education <- factor(analysis_data$education, levels = c("High School or less", "Some College", "Bachelor's or higher"))
+analysis_data$group <- factor(analysis_data$group, levels=c("Control", "Reason Ad", "Emotion Ad"))
+logit_interaction_model <- glm(vaccinated ~ group * education, data = analysis_data, family = binomial)
+```
+
+### Interaction Plot
+
+@fig-interaction-plot presents the predicted probabilities of vaccination derived from the interaction model, stratified by experimental group and education level. Each line traces the predicted vaccination probability for a given treatment condition across the three education categories, with the Control group serving as the reference condition.
+
+```{r}
+#| label: fig-interaction-plot
+#| fig-cap: "Predicted probability of vaccination by experimental group and education level. Lines connecting predicted values facilitate visual assessment of interaction effects; non-parallel lines suggest heterogeneous treatment effects across education subgroups."
+#| fig-width: 7
+#| fig-height: 5
+
+plot_data <- expand.grid(group = levels(analysis_data$group), education = levels(analysis_data$education))
+preds <- predict(logit_interaction_model, newdata = plot_data, type = "response", se.fit = TRUE)
+plot_data$predicted_prob <- preds$fit
+ggplot(plot_data, aes(x = education, y = predicted_prob, color = group, group = group)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 3) +
+  labs(x = "Education Level", y = "Predicted Probability of Vaccination", color = "Experimental Group") +
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0.4, 0.7)) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 15, hjust = 1))
+```
+
+The visual pattern of the lines in @fig-interaction-plot provides an intuitive assessment of treatment effect heterogeneity. When the lines representing the treatment groups run parallel to the Control line, the treatment effect is approximately constant across education levels, indicating a homogeneous response to the intervention. Conversely, when the lines converge or diverge, the treatment effect varies by education, suggesting that certain subgroups may benefit more or less from the advertising campaigns. The vertical distance between each treatment line and the Control line at a given education level represents the conditional average treatment effect (CATE) for that subgroup. These conditional effects are of particular policy relevance, as they inform decisions about targeting interventions toward populations where they are most effective.
+
+### Coefficient Plot
+
+@fig-coef-plot displays the estimated coefficients from the interaction model along with their 95% confidence intervals. This visualization complements the interaction plot by providing formal statistical inference on the magnitude and significance of each model term.
+
+```{r}
+#| label: fig-coef-plot
+#| fig-cap: "Coefficient estimates (log-odds) and 95% confidence intervals from the logistic regression model with treatment-by-education interactions. The dashed vertical line at zero represents the null hypothesis of no effect."
+#| fig-width: 8
+#| fig-height: 5
+
+tidy_model <- broom::tidy(logit_interaction_model, conf.int = TRUE) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(term = gsub("group", "Group: ", term),
+         term = gsub("education", "Edu: ", term),
+         term = gsub(":", " x ", term))
+ggplot(tidy_model, aes(x = estimate, y = reorder(term, estimate))) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_pointrange(aes(xmin = conf.low, xmax = conf.high), size = 0.8) +
+  labs(x = "Log-Odds Estimate (with 95% CI)", y = NULL) +
+  theme_minimal(base_size = 13)
+```
+
+The coefficients in @fig-coef-plot can be interpreted as follows. The main effect terms for treatment groups (Reason Ad and Emotion Ad) represent the effect of each campaign relative to the Control condition for individuals in the reference education category (High School or less). A positive coefficient indicates that assignment to the treatment group increases the log-odds of vaccination compared to the Control group within this baseline subpopulation. The main effect terms for education (Some College and Bachelor's or higher) capture the association between higher educational attainment and vaccination probability among individuals in the Control group, reflecting baseline differences in vaccine uptake across education levels that exist independent of the intervention.
+
+The interaction terms are of primary theoretical interest, as they quantify how the treatment effect differs from the reference category. A positive interaction coefficient indicates that the advertising campaign is more effective for that education subgroup than for the reference group; a negative coefficient suggests diminished effectiveness. Statistical significance is assessed by examining whether the 95% confidence interval excludes zero. Interaction terms with confidence intervals that cross the dashed line at zero do not provide sufficient evidence to conclude that the treatment effect differs meaningfully across education levels at the conventional 5% significance level.
+
+## Attitude Change
+
+On average, participants in both treatment groups showed a slight reduction in vaccine hesitancy from baseline to endline. @fig-attitude-dist shows the distribution of the attitude change score, revealing wide individual variation. An ANOVA test confirmed that the mean attitude change was statistically different across the three groups (F(2, 4497) = `r round(summary(aov(attitude_change ~ group, data = analysis_data))[[1]][1,"F value"], 2)`, p \< 0.01).
+
+```{r}
+#| label: fig-attitude-dist
+#| fig-cap: "Distribution of attitude change score by group. Negative values indicate a reduction in hesitancy."
+#| fig-width: 6
+#| fig-height: 4.5
+
+ggplot(analysis_data, aes(x = group, y = attitude_change, fill = group)) +
+  geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.1, fill = "white", alpha = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Experimental Group", y = "Attitude Change (Endline - Baseline)") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none")
+```
+
+# Discussion
+
+The results of this simulation suggest that advertising campaigns can have a positive, though modest, impact on both vaccine uptake and attitudes. The finding that both reason-based and emotion-based campaigns outperformed the control group indicates that well-designed public health messaging can be an effective tool.
+
+A key takeaway is the distinction between statistical significance and practical importance. With a large sample size (N=4,500), even small effect sizes—such as a 2-3 percentage point difference in vaccination rates—can be statistically significant. However, in a real-world scenario, the cost of implementing such a campaign must be weighed against this modest return.
+
+Furthermore, the exploratory analysis of heterogeneous effects by education level hints at a more complex reality. The (simulated) finding that the effectiveness of a campaign may depend on the audience's demographic characteristics suggests that a "one-size-fits-all" approach may be sub-optimal. Tailoring messages to specific population segments could be a more efficient strategy.
+
+# Conclusion and Limitations
+
+This study successfully simulated a randomized controlled trial to model the effects of different advertising strategies. The analysis pipeline demonstrated how to evaluate the results using appropriate statistical tests and visualizations in a reproducible manner.
+
+The primary limitation of this work is that it is a **simulation**. The generated data is based on a set of simplified assumptions about human behavior and the magnitude of intervention effects. The real world is far more complex, with innumerable confounding factors (e.g., social network effects, news events, regional policy changes) that were not modeled here.
+
+Therefore, the results should not be interpreted as a direct prediction of real-world outcomes, but rather as an illustration of a research methodology and an exploration of potential effects within a controlled, hypothetical environment. Future work could extend this simulation to incorporate more complex behavioral models or use the findings to inform the design of a real-world pilot study.

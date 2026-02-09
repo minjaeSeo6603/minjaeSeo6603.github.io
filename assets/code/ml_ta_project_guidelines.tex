@@ -1,0 +1,134 @@
+% COMMENT THIS OUT TO HIDE SOLUTIONS
+\def\SHOWSOLUTIONS{}
+
+\documentclass[11pt]{article}
+
+\usepackage[]{hyperref}
+\usepackage{comment}
+\usepackage{color,graphicx,amsthm,amssymb,amsmath,cite,xspace,setspace}
+\usepackage[small,bf]{caption}
+\usepackage{multicol,multirow}
+\usepackage{algorithm,algorithmic}
+\usepackage{soul}
+\usepackage{colortbl}
+\usepackage{rotating}
+\usepackage{textcomp}
+\usepackage{epsf}
+\usepackage{wasysym}
+\usepackage{mdwtab}
+\usepackage{bm}
+\usepackage{framed} % To be able to frame theorems and stuff
+\usepackage{verbatimbox}
+
+\usepackage{listings}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=single,
+	aboveskip=3mm,
+	belowskip=3mm,
+	basicstyle={\ttfamily},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	tabsize=3
+}
+
+\newcommand{\bmat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+
+% solutions
+\newenvironment{solution}{\vspace{2mm}\color{blue}\textbf{SOLUTION: }}{\color{black}}
+\ifdefined\SHOWSOLUTIONS \newcommand{\soln}[1]{{\vspace{2mm}\textcolor{blue}{\textbf{SOLUTION:} #1}}}\else\excludecomment{solution}\newcommand{\soln}[1]{}\fi
+
+% define the type of list to use
+\usepackage[shortlabels]{enumitem}
+\setlist[enumerate,1]{\bfseries 1., itemsep=6mm}
+\setlist[enumerate,2]{\bfseries a), itemsep=3mm}
+
+\def \bx{\boldsymbol{x}}
+\def \bw{\boldsymbol{w}}
+\def \bnu{\boldsymbol{\nu}}
+\def \by{\boldsymbol{y}}
+\def \bz{\boldsymbol{z}}
+\def \bu{\boldsymbol{u}}
+\def \bv{\boldsymbol{v}}
+\def \bb{\boldsymbol{b}}
+\def \bg{\boldsymbol{g}}
+\def \ba{\boldsymbol{a}}
+\def \be{\boldsymbol{e}}
+\def \bA{\boldsymbol{A}}
+\def \bB{\boldsymbol{B}}
+\def \bC{\boldsymbol{C}}
+\def \bX{\boldsymbol{X}}
+\def \bU{\boldsymbol{U}}
+
+\def\R{{\mathbb R}}
+\def\E{{\mathbb E}}
+\def\P{{\mathbb P}}
+\def \X{{\cal X}}
+\def \Y{{\cal Y}}
+
+\DeclareMathOperator{\rank}{rank}
+
+\usepackage{fullpage}
+
+% Header and footer
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\cfoot{\thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.0pt}
+
+\begin{document}
+
+\begin{center} {\Large
+{\bf CMSC 35300 Fall 2025} \\[2mm]
+{\bf Project Guidelines}}
+\end{center}
+\vspace{0mm}
+
+\begin{itemize}
+\item The project must be done in two- or three-person teams by students taking CMSC 35300. Teams can be comprised of students from any section of the course, but all students must be enrolled in the CMSC 35300 version of the course.
+
+\item The project topic is open.  Use your creativity.  Straightforward application of a method from class to a new dataset is insufficient for full marks.
+
+\item Use the project as an opportunity to demonstrate what you learned {\em in this class}.  Illustrating that you know how to use PyTorch or scikit-learn APIs on some dataset would not get a high score, as it has little to do with this course.
+
+\item Think of the project like an extra-large homework, with roughly a commensurate amount of time invested. Please do not spend 80 hours on the project!
+
+\item The project has 120 points:
+\begin{itemize}
+\item {\bf Proposal [20 points]:}
+The proposal should include a description of the basic problem(s) to be considered and datasets to be studied (if any).  The proposal should be about half a page. The purpose is for the instructors to get a sense of whether the project is overly ambitious or too small in scope to be eligible for full marks.
+\item {\bf Creativity [25 points]:}
+Are you pushing yourself to learn something new and go beyond class lectures?
+\item {\bf Literature Review [25 points]:}
+Explain how your project relates to other work in the area.  Cite at least 1-2 papers you have read.
+\item {\bf Execution [50 points]:}
+How well you carried out the project.
+Is the problem clearly explained?
+Did you do a careful analysis or well-thought-out experiments?
+Have you clearly communicated your ideas?
+\end{itemize}
+\item The final project report should be a 4-page \href{https://www.overleaf.com/latex/templates/neurips-2024/tpsbbrdqcmsh}{NeurIPS-format paper}; references can go beyond the 4th page.  This means you must write it in LaTeX. We do not intend/need to see your code, but that means that all of your process and analysis and evaluation must be clear from the text and the figures in the report.
+  \item {\bf Proposal [20 points]} deadline is {\bf November 18 at 11:59pm}.
+  \item {\bf Project [100 points]} deadline is {\bf December 8 at 11:59pm}.  There will be no reduction in points for late submissions, but grading starts on December 10 and anything not received by then will receive a grade of zero.
+\item Some ideas:
+\begin{itemize}
+  \item Distribution drift
+  \item Low-rank matrix completion methods
+  \item Non-negative matrix factorization
+  \item Relevance vector machines
+  \item The LASSO, sparse coding, and/or $\ell_1$ regularization
+  \item Collaborative filtering and recommender systems
+  \item PCA and autoencoder neural networks
+  \item (Stochastic) gradient descent and variants
+  \item Double descent in linear problems
+  \item Applications to other domains of sciences
+\end{itemize}
+\item You may choose a project related to your own research, but it must also connect with topics {\em in this class} and demonstrate what you have learned about those topics.
+\item \textbf{AI Policy.} The use of AI tools for any part of the course project (from brainstorming to text editing) must use proper citation (please use APA citation format). Failure to properly cite AI tools is considered a violation of the University of Chicago's Academic Honesty and Plagiarism policy. If you are unclear if something is an AI tool, please check with your instructor. We treat academic integrity violations by reporting them to the student's academic unit and giving zero credit for the project.
+\end{itemize}
+
+\end{document}

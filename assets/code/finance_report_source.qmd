@@ -1,0 +1,310 @@
+---
+title: "Attitudes Toward Debt and Household Borrowing Behavior: Evidence from the Survey of Consumer Finances, 2010--2022"
+author: "Minjae Seo"
+date: today
+format:
+  pdf:
+    toc: false
+    number-sections: true
+    documentclass: article
+    fontsize: 11pt
+    geometry: margin=1in
+    linestretch: 1.5
+header-includes:
+  - \usepackage{microtype}
+  - \usepackage{booktabs}
+  - \setlength{\emergencystretch}{2em}
+  - \usepackage{setspace}
+---
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+\begin{quote}
+\small
+This paper examines whether shifts in U.S. household debt attitudes are informative about actual borrowing behavior. Using repeated cross-sections from the Survey of Consumer Finances (2010, 2016, and 2022), I document four findings. First, the weighted share of households reporting debt as a ``good idea'' rises from 21.9\% to 26.5\%, while the ``bad idea'' share falls from 36.1\% to 29.5\%. Second, this shift persists after controlling for income, age, education, wealth, and debt burden. Third, attitudes are behaviorally informative: moving from the least to the most favorable attitude is associated with approximately 122.9\% higher debt holdings. Fourth, heterogeneity is concentrated along age rather than education margins. Purpose-specific evidence reveals a stable hierarchy: car debt is broadly accepted, living-expense debt is rising, and vacation debt remains low.
+
+\medskip
+
+\noindent \textbf{Keywords:} Household debt, debt attitudes, Survey of Consumer Finances, borrowing behavior, heterogeneity
+\end{quote}
+
+\newpage
+
+# Introduction
+
+Household debt plays a dual role in finance and macroeconomics. At the micro level, borrowing enables intertemporal smoothing and durable-goods acquisition. At the macro level, leverage amplifies household exposure to income shocks and asset-price revaluations. Standard frameworks explain debt through resources, risk, collateral, and borrowing constraints, yet observed debt behavior also depends on how households *evaluate* borrowing as a choice. This paper focuses on that attitudinal channel using direct survey responses in the U.S. Survey of Consumer Finances (SCF).
+
+The core research question is: did debt attitudes become more favorable between 2010 and 2022, and does that attitudinal variation map into actual debt levels after conditioning on household characteristics?
+
+This period is empirically informative for broad pattern analysis. It includes the post-financial-crisis recovery, prolonged low interest rates, substantial housing and equity repricing, and notable shifts in household balance-sheet composition. If social norms or preferences regarding debt changed in this period, we should observe movement in debt-attitude distributions and corresponding differences in borrowing outcomes.
+
+The paper makes five linked contributions. It builds a transparent multi-wave SCF dataset with harmonized inflation-adjusted variables, documents weighted trend movement in general debt attitudes, estimates conditional trend models that separate year effects from observable composition, quantifies the dollar magnitude linking attitudes to debt holdings, and evaluates heterogeneity by age, education, and borrowing purpose.
+
+# Economic Background and Literature
+
+The SCF is the canonical U.S. household-finance survey for assets, liabilities, and income. Its design combines a standard area-probability sample with a list-based oversample of wealthy families, improving measurement of upper-tail wealth and debt. This design requires survey weighting for population inference. For debt-attitude analysis, the SCF provides a rare combination of subjective responses and objective balance-sheet outcomes in the same household-level record.
+
+In lifecycle and buffer-stock settings, households borrow when current resources are low relative to expected future resources (Modigliani and Brumberg, 1954). Liquidity constraints and contract frictions limit this smoothing (Zeldes, 1989; Gross and Souleles, 2002). In household-finance data, debt portfolios also reflect financial sophistication, expectations, and risk perceptions (Campbell, 2006). At the macro level, household leverage interacts with consumption dynamics and downturn severity (Mian and Sufi, 2010; Mian, Rao, and Sufi, 2013). A reduced-form implication is that debt outcomes should depend on both fundamentals and subjective attitude variables. This paper tests that implication directly.
+
+Behavioral household-finance research emphasizes that literacy, beliefs, and framing alter financial choices (Lusardi and Mitchell, 2014). Debt-attitude questions in the SCF can be interpreted as a noisy proxy for aversion to borrowing or perceived social acceptability of debt use. If attitudes shift over time, then even after controlling for income and wealth, debt behavior may move through this preference channel.
+
+# Conceptual Framework
+
+I model household borrowing as a choice under resources, borrowing cost, and debt aversion. Household $i$ in year $t$ chooses debt $D_{it}$ to maximize
+
+$$
+\max_{D_{it}}\; u(C_{it}) - \phi(A_{it})\,g(D_{it}),
+$$
+
+with budget identity
+
+$$
+C_{it}=Y_{it}+D_{it}-R_tD_{it}+\Omega_{it}.
+$$
+
+Here $Y_{it}$ is disposable income, $\Omega_{it}$ captures assets and net worth, $R_t$ is the effective borrowing price, and $A_{it}$ is latent debt aversion. The SCF variable X401 is interpreted as an observed ordinal proxy for $A_{it}$, with lower values indicating lower aversion. The first-order condition
+
+$$
+u'(C_{it})(1-R_t)=\phi(A_{it})g'(D_{it})
+$$
+
+implies that, conditional on resources and credit cost, lower debt aversion shifts optimal debt upward.
+
+The latent attitude is modeled as
+
+$$
+A^*_{it} = \pi_0 + \pi_1 \log(\text{Income}_{it}) + \pi_2 \text{Age}_{it} + \pi_3 \text{Educ}_{it} + \pi_4 \log(\text{NetWorth}_{it}) + \pi_5 \text{Debt2Inc}_{it} + \pi_6 \text{Year}_t + \eta_{it},
+$$
+
+with observed X401 satisfying ordered thresholds $X401_{it}=j \Leftrightarrow \kappa_{j-1}<A^*_{it}\le \kappa_j$ for $j\in\{1,\dots,5\}$. In the empirical implementation, I estimate weighted linear models on the observed 1--5 scale for transparency, while retaining the ordered-latent interpretation as the conceptual benchmark.
+
+A second equation links attitudes to realized debt:
+
+$$
+D_{it}=\alpha+\theta \, X401_{it}+\delta_{\text{year}}+\Gamma'Z_{it}+u_{it}.
+$$
+
+Under the framework, $\theta<0$ is expected because lower X401 corresponds to lower debt aversion and therefore higher desired borrowing. Because attitudes and debt may be jointly determined, all estimates are interpreted as conditional associations rather than causal treatment effects.
+
+# Data
+
+The analysis uses three public waves of the SCF: 2010, 2016, and 2022.[^scf_data] For each wave, I combine the SCF Summary Extract (balance sheet, income, demographics, debt outcomes) with the supplementary attitudes module (opinion responses on borrowing). The merge keys follow SCF codebook identifiers: survey wave (YEAR), household identifier (YY1), and implicate index (Y1).[^scf_codebook] Because each household is released with five implicates under SCF multiple-imputation procedures, the final pooled sample contains 86,625 implicate-level observations (17,325 households $\times$ 5) and 399 variables.
+
+[^scf_data]: Board of Governors of the Federal Reserve System, Survey of Consumer Finances public data portal.
+[^scf_codebook]: SCF codebooks, University of Michigan Survey Research Center distribution.
+
+The processing pipeline harmonizes variable types and coding across waves, applies consistency checks, and reduces outlier sensitivity through 1st/99th percentile winsorization for major monetary variables. It constructs transformed covariates used in estimation, including log income, inverse-hyperbolic-sine net worth, debt-to-income ratios, and demographic indicators. All monetary variables are adjusted to 2022 dollars using CPI-U annual averages.
+
+The primary attitudinal variable is X401, which asks whether borrowing to buy needed goods when income is cut is a good or bad idea (1 = good idea, 5 = bad idea). The purpose-specific items are X402 (vacation borrowing), X403 (borrowing for living expenses), and X405 (borrowing to buy a car).[^xvars] The primary behavioral outcome is log real household debt, and the baseline control set includes age, education, log income, log net worth, and debt-to-income ratio. Because the SCF oversamples wealthy households, unweighted moments are not population-representative. All descriptive statistics, plots, and regressions use survey weights. Inference is reported with HC3 robust standard errors clustered at the household level under weighted least squares.
+
+[^xvars]: In the SCF codebooks, X401--X405 are debt-opinion items with purpose-specific question wording.
+
+# Empirical Design
+
+## Baseline Attitude Trend Model
+
+$$
+X401_{it} = \alpha + \delta_{2016}\mathbf{1}_{2016} + \delta_{2022}\mathbf{1}_{2022} + \boldsymbol{\gamma}'\mathbf{Z}_{it} + \varepsilon_{it},
+$$
+
+where $\mathbf{Z}_{it}$ collects log income, age, education, log net worth, and debt-to-income. Since X401 is coded so that lower values indicate more favorable attitudes, negative $\delta$ estimates imply greater debt acceptance relative to 2010 after conditioning on observables.
+
+## Attitude--Behavior Alignment Model
+
+$$
+\log(1+\text{Debt}_{it}) = \alpha + \theta \, X401_{it} + \eta_{2016}\mathbf{1}_{2016} + \eta_{2022}\mathbf{1}_{2022} + \boldsymbol{\beta}'\mathbf{W}_{it} + u_{it}.
+$$
+
+The parameter $\theta$ is the key object. Under the choice-based framework, $\theta<0$ is expected.
+
+## Heterogeneity Models
+
+$$
+X401_{it} = \alpha + \sum_{k\in\{2016,2022\}}\delta_k \mathbf{1}_{k} + \lambda_1 G_i + \sum_{k}\lambda_k(\mathbf{1}_{k}\times G_i) + \Gamma'Z_{it} + \nu_{it},
+$$
+
+where $G$ includes YOUNG (age $<$ 40) and COLLEGE (bachelor's degree or higher). The interaction coefficients $\lambda_k$ measure whether post-2010 attitude shifts differ across groups.
+
+## Purpose-Specific Comparisons
+
+For each of X402, X403, and X405, I define an acceptance indicator $\mathbf{1}[X\le 2]$ and report weighted acceptance rates by year.
+
+# Results I: Descriptive Patterns
+
+## Aggregate Shift in Debt Attitudes
+
+Table 1 reports weighted shares by attitude category.
+
+| Year | Good (X401 $\le$ 2) | Mixed (X401 = 3) | Bad (X401 $\ge$ 4) |
+|---:|---:|---:|---:|
+| 2010 | 21.9% | 42.0% | 36.1% |
+| 2016 | 25.9% | 42.4% | 31.7% |
+| 2022 | 26.5% | 44.0% | 29.5% |
+
+The favorable share increases by 4.6 percentage points and the unfavorable share declines by 6.6 percentage points. Weighted mean X401 falls from 3.284 (2010) to 3.060 (2022), consistent with a broad shift toward acceptance.
+
+![Weighted trend in debt attitudes (X401), SCF 2010/2016/2022.](../../output/figures/x401_weighted_trend.png)
+
+## Acceptance Depends on Debt Purpose
+
+| Purpose | 2010 | 2016 | 2022 |
+|---|---:|---:|---:|
+| Vacation (X402) | 13.9% | 10.3% | 13.0% |
+| Living expenses (X403) | 50.6% | 56.6% | 63.1% |
+| Car purchase (X405) | 76.9% | 76.3% | 75.7% |
+
+Car borrowing remains broadly accepted, living-expense borrowing rises strongly, and vacation borrowing stays low. This ranking indicates that households distinguish necessity-linked from discretionary debt.
+
+![Acceptance rates by debt purpose.](../../output/figures/purpose_acceptance_trends.png)
+
+## Debt Levels Across Attitude Groups
+
+Weighted mean debt is monotonically lower for less debt-friendly attitudes. In 2022, mean debt is \$138,123 for the favorable group and \$96,731 for the unfavorable group.
+
+![Mean debt levels by attitude group and year.](../../output/figures/debt_levels_by_attitude_year.png)
+
+![Weighted average real debt by full X401 attitude categories.](../../output/figures/debt_by_attitude_refined.png)
+
+## Distributional Pattern by Income Quintile
+
+Debt-favorable attitudes rise in four of five income quintiles from 2010 to 2022. The good-attitude share increases from 20.7% to 25.1% in Q1 through to 24.8% to 28.1% in Q4, while Q5 declines from 24.8% to 22.8%.
+
+![Debt-favorable share by income quintile.](../../output/figures/good_share_income_quintile.png)
+
+# Results II: Multivariate Evidence
+
+## Baseline Attitude Model
+
+Table 3 reports the two benchmark regressions.
+
+| Variable | Model 1: X401 | Model 2: log(Debt) |
+|---|---:|---:|
+| Constant | 3.7187*** (0.1393) | -2.1439*** (0.7121) |
+| Year 2016 | -0.1718*** (0.0301) | 0.0643 (0.0895) |
+| Year 2022 | -0.2284*** (0.0362) | 0.2164** (0.1065) |
+| X401 | --- | -0.2003*** (0.0264) |
+| Log income | -0.0523*** (0.0128) | 1.0520*** (0.0685) |
+| Age | 0.0058*** (0.0009) | -0.0550*** (0.0027) |
+| Education | -0.0090* (0.0053) | 0.2751*** (0.0182) |
+| Log net worth | -0.0059*** (0.0020) | -0.0633*** (0.0046) |
+| Debt-to-income | 0.0011 (0.0023) | --- |
+| N | 86,625 | 86,625 |
+| R^2 | 0.0115 | 0.1698 |
+
+Both post-2010 year indicators are negative and precise in Model 1, implying that debt attitudes become more favorable even after controls. Income and net worth enter with signs consistent with greater debt acceptance among higher-resource households. Age is positive, implying relatively less favorable attitudes among older households.
+
+![Baseline regression coefficients with 95\% confidence intervals.](../../output/figures/regression_coefficients_main.png)
+
+## Behavior Consistency Model
+
+The X401 coefficient in the log debt model implies that a one-point increase in X401 (less favorable attitude) is associated with approximately 18.2% lower debt holdings. Moving from X401 = 5 to X401 = 1 implies approximately 122.9% higher predicted debt, conditional on controls.
+
+## Heterogeneity Results
+
+Table 4 reports the interaction model where age and college heterogeneity are estimated jointly.
+
+| Variable (DV: X401) | Estimate (s.e.) |
+|---|---:|
+| Year 2016 | -0.1599*** (0.0423) |
+| Year 2022 | -0.1711*** (0.0517) |
+| Young (age < 40) | 0.0246 (0.0572) |
+| 2016 × Young | -0.1554** (0.0667) |
+| 2022 × Young | -0.2011** (0.0819) |
+| College | -0.0921 (0.0586) |
+| 2016 × College | 0.1034 (0.0631) |
+| 2022 × College | 0.0157 (0.0730) |
+| N | 86,625 |
+| R^2 | 0.0128 |
+
+The age interaction is economically meaningful and statistically strong, whereas the education interaction is weak. Descriptive weighted trends confirm this: young households rise from 22.8% (2010) to 31.4% (2022), while older households rise from 21.5% to 24.6%.
+
+*Notes:* Standard errors in parentheses. All models use SCF survey weights with household-cluster robust standard errors. Significance: \*\*\* $p<0.01$, \*\* $p<0.05$, \* $p<0.10$.
+
+![Debt-favorable attitude trend by age group.](../../output/figures/good_share_age_groups.png)
+
+# Robustness and Scope
+
+## Specification Robustness
+
+Across the core specifications reported in this paper, the post-2010 year effects in the attitude equation remain negative, and the attitude coefficient in the debt equation remains negative. This consistency supports the interpretation that debt attitudes contain independent signal for borrowing behavior after conditioning on observables.
+
+## Interpretation and Limits
+
+The empirical results are best interpreted as weighted conditional associations in repeated cross-sections. They do not identify a causal treatment effect of attitudes on debt. In particular, attitudes and borrowing may be jointly determined, and unobserved preferences or constraints may remain in the error term even after controls.
+
+# Discussion
+
+The results indicate that debt attitudes carry independent signal beyond standard resource controls. Income and net worth are important covariates, but year effects in the attitude equation and the X401 coefficient in the debt equation remain economically and statistically meaningful after conditioning on observables.
+
+Purpose-specific responses suggest that attitude measures capture structured economic judgments rather than survey noise: households report high acceptance for car debt, intermediate and rising acceptance for living-expense debt, and persistently low acceptance for vacation debt. Heterogeneity estimates show that trend shifts are concentrated by age rather than by college status, implying that cohort composition may affect aggregate leverage demand even when educational composition is relatively stable.
+
+For applied household-finance analysis, these patterns support including attitude variables in reduced-form models of debt demand, risk segmentation, and scenario design.
+
+# Conclusion
+
+Using SCF 2010/2016/2022 data, this paper documents a broad increase in U.S. debt acceptance and shows that debt attitudes are strongly associated with realized debt levels. The relationship is economically large, robust to core observables, and heterogeneous by age group. Purpose-specific attitudes indicate that households separate necessity and discretionary borrowing in a stable way over time.
+
+The main contribution is empirical clarity: debt attitudes are informative state variables for household-finance analysis. A natural next step is to extend the framework with richer external covariates and policy variation while preserving design-consistent SCF inference.
+
+\newpage
+
+# Appendix: Full Regression Tables {.unnumbered}
+
+## Supplementary Specification Summary {.unnumbered}
+
+| Model | Coefficient | Estimate (s.e.) | p-value |
+|---|---|---:|---:|
+| Baseline X401 | Year 2016 | -0.1718 (0.0301) | <0.001 |
+| Baseline X401 | Year 2022 | -0.2284 (0.0362) | <0.001 |
+| Baseline log(Debt) | X401 | -0.2003 (0.0264) | <0.001 |
+| Heterogeneity X401 | 2016 × Young | -0.1554 (0.0667) | 0.020 |
+| Heterogeneity X401 | 2022 × Young | -0.2011 (0.0819) | 0.014 |
+
+## Interaction Model Coefficients {.unnumbered}
+
+| Variable (DV: X401) | Estimate (s.e.) |
+|---|---:|
+| Year 2016 | -0.1599*** (0.0423) |
+| Year 2022 | -0.1711*** (0.0517) |
+| Young (age < 40) | 0.0246 (0.0572) |
+| 2016 × Young | -0.1554** (0.0667) |
+| 2022 × Young | -0.2011** (0.0819) |
+| College | -0.0921 (0.0586) |
+| 2016 × College | 0.1034 (0.0631) |
+| 2022 × College | 0.0157 (0.0730) |
+| Log income | -0.0540*** (0.0130) |
+| Age | 0.0042*** (0.0013) |
+| Education | -0.0022 (0.0081) |
+| Log net worth | -0.0059*** (0.0020) |
+| Debt-to-income | 0.0010 (0.0024) |
+| N | 86,625 |
+| R^2 | 0.0128 |
+
+*Notes:* All regressions use SCF survey weights with household-cluster robust standard errors. Standard errors in parentheses. \*\*\* $p<0.01$, \*\* $p<0.05$, \* $p<0.10$.
+
+\newpage
+
+# References {.unnumbered}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+Board of Governors of the Federal Reserve System. (2023). *Survey of Consumer Finances (SCF) Public Data and Documentation*. https://www.federalreserve.gov/econres/scfindex.htm
+
+Campbell, J. Y. (2006). Household finance. *Journal of Finance*, 61(4), 1553--1604.
+
+Dynan, K. (2012). Is a household debt overhang holding back consumption? *Brookings Papers on Economic Activity*, 43(1), 299--362.
+
+Gross, D. B., & Souleles, N. S. (2002). Do liquidity constraints and interest rates matter for consumer behavior? Evidence from credit card data. *Quarterly Journal of Economics*, 117(1), 149--185.
+
+Lusardi, A., & Mitchell, O. S. (2014). The economic importance of financial literacy: Theory and evidence. *Journal of Economic Literature*, 52(1), 5--44.
+
+Mian, A., Rao, K., & Sufi, A. (2013). Household balance sheets, consumption, and the economic slump. *Quarterly Journal of Economics*, 128(4), 1687--1726.
+
+Mian, A., & Sufi, A. (2010). Household leverage and the recession of 2007--09. *IMF Economic Review*, 58(1), 74--117.
+
+Modigliani, F., & Brumberg, R. (1954). Utility analysis and the consumption function. In *Post-Keynesian Economics* (pp. 388--436). Rutgers University Press.
+
+Zeldes, S. P. (1989). Consumption and liquidity constraints: An empirical investigation. *Journal of Political Economy*, 97(2), 305--346.
