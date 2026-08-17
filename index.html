@@ -3,415 +3,849 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Minjae Seo | Research and Data Portfolio</title>
+    <title>Minjae Seo — Causal Inference, Health and Labor Economics</title>
     <meta
       name="description"
-      content="Minjae Seo portfolio: econometrics, machine learning, policy analysis, and reproducible research engineering."
+      content="Minjae Seo, M.A. in Public Policy candidate at the University of Chicago Harris School. Working papers and applied research on partial identification, treatment-effect heterogeneity, and policy evaluation in health, labor, and household finance."
     />
+    <meta name="author" content="Minjae Seo" />
+    <meta property="og:title" content="Minjae Seo — Causal Inference, Health and Labor Economics" />
+    <meta
+      property="og:description"
+      content="Working papers and applied research on partial identification, treatment-effect heterogeneity, and policy evaluation."
+    />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://minjaeseo6603.github.io/" />
+    <link rel="icon" href="assets/images/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&amp;family=Sora:wght@400;500;600;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="scroll-progress" aria-hidden="true">
-      <span id="scroll-progress-fill"></span>
-    </div>
-    <div class="cursor-glow" aria-hidden="true"></div>
-    <a class="skip-link" href="#main-content">Skip to content</a>
-    <div class="backdrop-shape shape-a"></div>
-    <div class="backdrop-shape shape-b"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="site-header">
-      <a class="brand" href="#home">MINJAE SEO</a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
-        Menu
-      </button>
-      <nav id="main-nav" class="site-nav">
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <main id="main-content">
-      <section id="home" class="hero reveal">
-        <div class="hero-layout">
-          <div class="hero-copy">
-            <div class="uchicago-badge" aria-label="University of Chicago affiliation">
-              <img src="assets/images/uchicago_logo.svg" alt="University of Chicago logo" />
-              <span>University of Chicago</span>
-            </div>
-            <p class="eyebrow">Applied Econometrics x ML x Policy</p>
-            <h1>Causality Before Conclusions.</h1>
-            <p class="hero-intro">
-              I am Minjae Seo, a Master of Arts in Public Policy candidate at the University of
-              Chicago with a Certificate in Research Methods. I design reproducible analysis systems
-              and convert complex data into clear, decision-oriented evidence for policy and business
-              decisions.
+    <div class="shell">
+      <!-- ───────────────────────── RAIL ───────────────────────── -->
+      <header class="rail">
+        <div class="rail-inner">
+          <div class="rail-id">
+            <img class="rail-portrait" src="assets/images/profile.jpg" alt="Minjae Seo" width="88" height="110" />
+            <a class="rail-name" href="#top">Minjae&nbsp;Seo</a>
+            <p class="rail-role">
+              M.A. in Public Policy candidate<br />
+              Harris School, University of Chicago
             </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#projects">View Project Showcase</a>
-              <a class="button button-secondary" href="#workflow">View Workflow</a>
-            </div>
-            <div class="social-row">
-              <a
-                class="social-logo social-linkedin"
-                href="https://www.linkedin.com/in/minjae-seo-6915b31b5/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-              >
-                <svg viewBox="0 0 16 16" aria-hidden="true">
-                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.71-.521-1.248-1.342-1.248-.821 0-1.359.538-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.879 1.232-.879.869 0 1.216.663 1.216 1.634v3.866h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169H6.249c.03.678 0 7.225 0 7.225h2.401z" />
-                </svg>
-                <span class="sr-only">LinkedIn</span>
-              </a>
-              <a
-                class="social-logo social-github"
-                href="https://github.com/minjaeseo6603"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub"
-              >
-                <svg viewBox="0 0 16 16" aria-hidden="true">
-                  <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4.01 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-                </svg>
-                <span class="sr-only">GitHub</span>
-              </a>
-              <a class="social-mail" href="mailto:minjaeseo@uchicago.edu">Chicago Email</a>
-            </div>
-            <div class="hero-metrics">
-              <article>
-                <p class="metric-value" data-value="10" data-suffix="+">10+</p>
-                <p class="metric-label">Integrated projects and writeups</p>
-              </article>
-              <article>
-                <p class="metric-value" data-value="180" data-suffix="k+">180k+</p>
-                <p class="metric-label">Observations in MA reform study</p>
-              </article>
-              <article>
-                <p class="metric-value" data-value="2026">2026</p>
-                <p class="metric-label">Open to full-time opportunities</p>
-              </article>
-            </div>
-
-            <div class="ticker" aria-label="Core methods and tools">
-              <div class="ticker-track">
-                <span>Double Machine Learning</span>
-                <span>Difference-in-Differences</span>
-                <span>Regression Discontinuity</span>
-                <span>Stata / R / Python</span>
-                <span>Policy Evaluation</span>
-                <span>Reproducible Research</span>
-                <span>Double Machine Learning</span>
-                <span>Difference-in-Differences</span>
-                <span>Regression Discontinuity</span>
-                <span>Stata / R / Python</span>
-                <span>Policy Evaluation</span>
-                <span>Reproducible Research</span>
-              </div>
-            </div>
           </div>
 
-          <aside class="profile-panel">
-            <img src="assets/images/profile.jpg" alt="Minjae Seo profile photo" class="profile-photo" />
-            <div class="profile-meta">
-              <p><strong>Current</strong><span class="meta-value">M.A. in Public Policy, University of Chicago</span></p>
-              <p><strong>Background</strong><span class="meta-value">B.A. in Statistics, UC Berkeley</span></p>
-              <p><strong>Role</strong><span class="meta-value">Research Assistant, Chicago Booth (Prof. Anthony Lee)</span></p>
-              <p><strong>Research</strong><span class="meta-value">Causal Inference | Health Economics | Labor Economics | Finance</span></p>
+          <button class="rail-toggle" type="button" aria-expanded="false" aria-controls="rail-nav">
+            <span class="rail-toggle-label">Contents</span>
+            <span class="rail-toggle-mark" aria-hidden="true"></span>
+          </button>
+
+          <nav id="rail-nav" class="rail-nav" aria-label="Sections">
+            <a href="#working-papers"><span class="nav-num">01</span> Working papers</a>
+            <a href="#research"><span class="nav-num">02</span> Earlier research</a>
+            <a href="#experience"><span class="nav-num">03</span> Research experience</a>
+            <a href="#teaching"><span class="nav-num">04</span> Teaching &amp; service</a>
+            <a href="#methods"><span class="nav-num">05</span> Methods &amp; tools</a>
+            <a href="#contact"><span class="nav-num">06</span> Contact</a>
+          </nav>
+
+          <div class="rail-foot">
+            <a class="cv-link" href="assets/docs/Seo_Minjae_CV.pdf">
+              Curriculum vitae
+              <span class="cv-meta">PDF</span>
+            </a>
+            <ul class="rail-contact">
+              <li><a href="mailto:minjaeseo@uchicago.edu">minjaeseo@uchicago.edu</a></li>
+              <li><a href="https://github.com/minjaeseo6603" rel="noreferrer">GitHub</a></li>
+              <li>
+                <a href="https://www.linkedin.com/in/minjae-seo-6915b31b5/" rel="noreferrer">LinkedIn</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <!-- ───────────────────────── MAIN ───────────────────────── -->
+      <main id="main" class="content">
+        <!-- Lede -->
+        <section id="top" class="lede">
+          <p class="eyebrow">Causal inference · Health and labor economics · Household finance</p>
+          <h1>What the data can &mdash; and cannot &mdash; identify.</h1>
+          <div class="lede-body">
+            <p>
+              I am a Master of Arts in Public Policy candidate at the University of Chicago Harris
+              School, with a Certificate in Research Methods and a B.A. in Statistics from UC
+              Berkeley. My work sits at the boundary of what an identification strategy actually
+              delivers: where a design point-identifies an effect, where it only bounds one, and how
+              much of a reported result survives when the assumptions behind it are relaxed.
+            </p>
+            <p>
+              Current projects cover partial identification under treatment-effect heterogeneity,
+              the labor-demand response to large language models, and intergenerational income
+              mobility. I work primarily in R, Stata, and Python, and I write analysis that another
+              researcher can rerun end to end.
+            </p>
+          </div>
+
+          <dl class="standing">
+            <div>
+              <dt>Currently</dt>
+              <dd>Research Assistant, Chicago Booth &mdash; Prof. Anthony Le</dd>
             </div>
+            <div>
+              <dt>Summer 2026</dt>
+              <dd>Research Analyst Intern, World Bank</dd>
+            </div>
+            <div>
+              <dt>Fields</dt>
+              <dd>Applied econometrics, health economics, labor economics</dd>
+            </div>
+            <div>
+              <dt>Expected</dt>
+              <dd>M.A., June 2027</dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- ─────────────── 01 · WORKING PAPERS ─────────────── -->
+        <section id="working-papers" class="section">
+          <h2 class="section-head">
+            <span class="section-num">01</span>
+            <span class="section-title">Working papers</span>
+            <span class="section-rule" aria-hidden="true"></span>
+            <span class="section-count">Four</span>
+          </h2>
+
+          <!-- WP 1 -->
+          <article class="paper">
+            <div class="paper-head">
+              <h3>
+                Robustness of Treatment Effects between Common and Heterogeneous Treatment Effects
+              </h3>
+              <p class="paper-status"><span class="status-dot" aria-hidden="true"></span> Working paper &middot; July 2026</p>
+            </div>
+            <p class="paper-abstract">
+              Empirical evaluations routinely report a single causal effect as though it were common
+              to every unit. When outcomes are discrete, that assumption both generates prediction
+              error and misstates the policy-relevant estimand. The paper separates the common and
+              differential components of a treatment effect, characterizes the identified set for
+              the differential component using Fréchet&ndash;Hoeffding and Makarov bounds, and
+              measures how far estimated effects move once the common-effects benchmark is dropped.
+              Randomization identifies the two marginal distributions of potential outcomes but not
+              their joint law &mdash; the copula gap is where the heterogeneity lives.
+            </p>
+
+            <figure class="estimate" data-kind="set">
+              <figcaption>The estimand is bounded, not point-identified</figcaption>
+              <div class="estimate-track" style="--lo: 21%; --hi: 79%">
+                <span class="track-line" aria-hidden="true"></span>
+                <span class="track-interval" aria-hidden="true"></span>
+              </div>
+              <p class="estimate-read">
+                <span class="estimate-note">Schematic &mdash; the paper reports an identified set rather than a point estimate</span>
+              </p>
+            </figure>
+
+            <dl class="paper-meta">
+              <div><dt>Design</dt><dd>Partial identification</dd></div>
+              <div><dt>Tools</dt><dd>Fréchet&ndash;Hoeffding · Makarov bounds · copula</dd></div>
+              <div><dt>Evidence</dt><dd>Analytical results with numerical robustness analysis</dd></div>
+            </dl>
+
+            <p class="paper-links">
+              <a class="link-primary" href="assets/papers/treatment_effect_heterogeneity_bounds.pdf">Read the paper</a>
+            </p>
+          </article>
+
+          <!-- WP 2 -->
+          <article class="paper">
+            <div class="paper-head">
+              <h3>Impact of AI Exposure on Labor Demand: Firm-Size Heterogeneity</h3>
+              <p class="paper-status"><span class="status-dot" aria-hidden="true"></span> Working paper &middot; May 2026</p>
+            </div>
+            <p class="paper-abstract">
+              The November 2022 release of ChatGPT was the first general-purpose deployment of a
+              language model able to substitute for cognitive labor at scale. This paper asks whether
+              that shock reshaped hiring, and whether the response was symmetric across the
+              firm-size distribution. The triple-difference design exploits three margins:
+              occupation-level LLM exposure, within-industry firm size, and the pre/post-ChatGPT
+              split, on a 14.5-million-cell panel of U.S. public-firm job postings from Revelio Labs
+              merged to Compustat fundamentals, 2018&ndash;2025.
+            </p>
+
+            <figure class="estimate">
+              <figcaption>Triple interaction: AI exposure &times; large firm &times; post-ChatGPT</figcaption>
+              <div class="estimate-track" style="--lo: 44.8%; --hi: 87.8%; --pt: 66.3%; --zero: 50%">
+                <span class="track-line" aria-hidden="true"></span>
+                <span class="track-zero" aria-hidden="true"></span>
+                <span class="track-interval" aria-hidden="true"></span>
+                <span class="track-point" aria-hidden="true"></span>
+              </div>
+              <p class="estimate-read">
+                <span class="estimate-value">+0.065</span>
+                <span class="estimate-note">95% CI [&minus;0.021, +0.151] &middot; p = 0.14 &mdash; not distinguishable from zero</span>
+              </p>
+            </figure>
+
+            <p class="paper-note">
+              Within-size coefficients are sharply negative at both small (&minus;0.211, SE 0.033) and
+              large (&minus;0.146, SE 0.026) firms. The triple interaction runs against the prior that
+              large firms lead in IT adoption, but the interval covers zero and the design cannot yet
+              reject a null. Next steps extend the outcome to separation rates and WARN-Act layoffs,
+              add PPML as a robustness check on the log(&middot;&nbsp;+&nbsp;1) specification, and test
+              alternative exposure measures and treatment dates.
+            </p>
+
+            <dl class="paper-meta">
+              <div><dt>Design</dt><dd>Triple difference (DDD)</dd></div>
+              <div><dt>Data</dt><dd>Revelio Labs postings · Compustat · Eloundou LLM exposure</dd></div>
+              <div><dt>Panel</dt><dd>14.5M cells · U.S. public firms · 2018&ndash;2025</dd></div>
+            </dl>
+
+            <p class="paper-links">
+              <a class="link-primary" href="assets/papers/ai_exposure_firm_size.pdf">Read the paper</a>
+            </p>
+          </article>
+
+          <!-- WP 3 -->
+          <article class="paper">
+            <div class="paper-head">
+              <h3>
+                Channels of Negative Earnings for Community-College Transfer Students: A
+                Selection-and-Mediation Analysis in NLSY97
+              </h3>
+              <p class="paper-status"><span class="status-dot" aria-hidden="true"></span> Working paper &middot; May 2026</p>
+            </div>
+            <p class="paper-abstract">
+              Two-to-four-year transfer students earn less than direct-entry BA holders, but the size
+              of that gap and the channel behind it are both contested. Using the NLSY97 cohort, this
+              paper estimates the transfer wage penalty conditional on BA completion under a
+              Heckman-style selection-on-observables design augmented with the 1997 Achenbach
+              Behavior Problems Index, then tests post-treatment mental health as a mediator under
+              both Baron&ndash;Kenny and ACME frameworks.
+            </p>
+
+            <figure class="estimate">
+              <figcaption>Annual earnings penalty &mdash; five estimators</figcaption>
+              <div class="estimate-track" style="--lo: 18.6%; --hi: 40.1%; --pt: 18.6%; --zero: 83.3%">
+                <span class="track-line" aria-hidden="true"></span>
+                <span class="track-zero" aria-hidden="true"></span>
+                <span class="track-interval" aria-hidden="true"></span>
+                <span class="track-point" aria-hidden="true"></span>
+              </div>
+              <p class="estimate-read">
+                <span class="estimate-value">&minus;$7,770/yr</span>
+                <span class="estimate-note">
+                  IPW · p = 0.048 · N = 2,306 &mdash; estimator range &minus;$7,770 to &minus;$5,189
+                  across OLS, 1:1 and 1:3 PSM, IPW, and AIPW
+                </span>
+              </p>
+            </figure>
+
+            <p class="paper-note">
+              Two findings carry the paper. The IPW estimate lands close to the &minus;$7,000
+              administrative benchmark in Miller (2026). And a previously reported non-cognitive
+              control effect turns out to be a sample-composition artifact: holding the sample fixed
+              at N&nbsp;=&nbsp;740 cuts the Achenbach attenuation from 27.5% to 4.5%. The mediated
+              effect through mental health is a precise null at the available sample size.
+            </p>
+
+            <dl class="paper-meta">
+              <div><dt>Design</dt><dd>Selection on observables · PSM · IPW · AIPW · ACME mediation</dd></div>
+              <div><dt>Data</dt><dd>NLSY97 (born 1980&ndash;1984) · MHI-5 2004/2006/2008</dd></div>
+              <div><dt>Code</dt><dd>Full replication package in R</dd></div>
+            </dl>
+
+            <p class="paper-links">
+              <a class="link-primary" href="https://github.com/minjaeSeo6603/Mediation_Analysis-stem-transfer" rel="noreferrer">Replication package</a>
+              <span class="link-aside">Draft available on request</span>
+            </p>
+          </article>
+
+          <!-- WP 4 -->
+          <article class="paper">
+            <div class="paper-head">
+              <h3>
+                Intergenerational Income Mobility and Private Education in South Korea, 1998&ndash;2024
+              </h3>
+              <p class="paper-status"><span class="status-dot" aria-hidden="true"></span> Working paper &middot; April 2026</p>
+            </div>
+            <p class="paper-abstract">
+              A cohort analysis of income persistence across the 1960&ndash;2000 birth cohorts, built
+              on waves 1&ndash;27 of the Korean Labor and Income Panel Study and a rigorously
+              deduplicated sample of 5,388 children, one observation each. The paper is as much about
+              lifecycle bias as about mobility: the apparent decline in persistence across cohorts is
+              contaminated at both ends, upward for early cohorts observed at parental ages 55&ndash;65
+              and downward for late cohorts observed at 25&ndash;30, so the trend is read as suggestive
+              rather than structural.
+            </p>
+
+            <figure class="estimate">
+              <figcaption>Baseline intergenerational income elasticity</figcaption>
+              <div class="estimate-track" style="--lo: 35%; --hi: 52.3%; --pt: 43.7%; --zero: 0%">
+                <span class="track-line" aria-hidden="true"></span>
+                <span class="track-zero" aria-hidden="true"></span>
+                <span class="track-interval" aria-hidden="true"></span>
+                <span class="track-point" aria-hidden="true"></span>
+              </div>
+              <p class="estimate-read">
+                <span class="estimate-value">IGE 0.131</span>
+                <span class="estimate-note">
+                  clustered SE 0.013 · 0.178 with parental age and cohort controls · rank&ndash;rank
+                  slope 0.163 · 0.154 for the lifecycle-adjusted core sample
+                </span>
+              </p>
+            </figure>
+
+            <p class="paper-note">
+              Daughters show roughly twice the elasticity of sons &mdash; a margin the existing Korean
+              literature, focused on sons, has passed over. Quantile regression puts persistence
+              highest at the bottom of the distribution (0.161 at the 10th percentile against 0.057 at
+              the 90th), and the regional ordering runs Capital Region &gt; Metropolitan &gt; Province.
+            </p>
+
+            <dl class="paper-meta">
+              <div><dt>Design</dt><dd>IGE · rank&ndash;rank · quantile regression</dd></div>
+              <div><dt>Data</dt><dd>KLIPS waves 1&ndash;27 (1998&ndash;2024) · N = 5,388</dd></div>
+              <div><dt>Stage</dt><dd>Step 1 of a multi-stage project</dd></div>
+            </dl>
+
+            <p class="paper-links">
+              <a class="link-primary" href="assets/papers/korea_income_mobility.pdf">Read the paper</a>
+            </p>
+          </article>
+
+          <!-- Proposal -->
+          <aside class="proposal">
+            <p class="proposal-label">In development</p>
+            <h3>How Does AI Advice Actually Help? Exploratory Fieldwork in Rural Tanzania</h3>
+            <p>
+              A proposed randomized study of AI-delivered advice in high-stakes decisions &mdash;
+              major borrowing, whether to seek hospital care, whether to leave an unsafe home &mdash;
+              among rural households with thin advisory coverage. Rural Tanzania is one of the few
+              remaining settings where first exposure to AI can still be randomized before diffusion
+              closes the counterfactual. The sign is treated as genuinely open: advice can relieve
+              decision burden or raise anxiety and displace agency.
+            </p>
+            <p class="proposal-meta">
+              Weiss Fund for Research in Development Economics · exploratory travel proposal · 2026
+            </p>
           </aside>
-        </div>
-      </section>
+        </section>
 
-      <section id="about" class="section reveal">
-        <div class="section-head">
-          <h2>About</h2>
-        </div>
-        <p>
-          I hold a B.A. in Statistics from the University of California, Berkeley, where I
-          specialized in causal inference and machine learning methods for impact evaluation and
-          policy analysis. My research focus is causal inference with specialization in health and
-          labor economics, alongside finance-focused empirical analysis.
-        </p>
-        <p>
-          My recent work emphasizes double machine learning, high-dimensional forecasting, healthcare
-          analytics, and staggered treatment-effect identification. Alongside research, I build
-          reproducible code-first project systems and I am actively seeking full-time roles beginning
-          in Summer 2026.
-        </p>
-        <div class="tag-row">
-          <span>Double Machine Learning</span>
-          <span>Difference-in-Differences</span>
-          <span>Regression Discontinuity</span>
-          <span>Survey Data Analysis</span>
-          <span>Policy Evaluation</span>
-          <span>Reproducible Reporting</span>
-        </div>
-      </section>
-
-      <section id="projects" class="section reveal">
-        <div class="section-head">
-          <h2>Project Showcase</h2>
-          <p>
-            Each project card summarizes the core question, applied methods, and final deliverables
-            so visitors can quickly understand both analytical depth and implementation quality.
+        <!-- ─────────────── 02 · EARLIER RESEARCH ─────────────── -->
+        <section id="research" class="section">
+          <h2 class="section-head">
+            <span class="section-num">02</span>
+            <span class="section-title">Earlier research &amp; writing</span>
+            <span class="section-rule" aria-hidden="true"></span>
+            <span class="section-count">Twelve</span>
+          </h2>
+          <p class="section-intro">
+            Completed studies, replication packages, and writing samples, grouped by field. Each
+            entry lists its identification strategy, data, and headline result.
           </p>
-        </div>
 
-        <div class="filter-row" role="group" aria-label="Project category filters">
-          <button class="filter-button is-active" data-filter="all">All</button>
-          <button class="filter-button" data-filter="research">Research</button>
-          <button class="filter-button" data-filter="policy">Policy</button>
-        </div>
+          <!-- Group A -->
+          <h3 class="group-head">Health &amp; social policy</h3>
+          <ol class="works">
+            <li class="work">
+              <h4>Answering Causal Questions Using Natural Experiments in Observational Field Studies</h4>
+              <p class="work-desc">
+                China's Huai River policy draws a geographic line: cities north of it receive winter
+                district heating, cities south of it do not. A sharp regression discontinuity at the
+                33°N threshold turns that line into a natural experiment for indoor temperature and
+                occupant comfort. The paper also shows why it matters &mdash; conventional correlational
+                analysis of the same data flips sign between whole-group and subgroup samples.
+              </p>
+              <p class="work-result">
+                <span class="result-figure">+4.4 °C</span> indoor operative temperature ·
+                <span class="result-figure">+0.6</span> thermal sensation vote · 32-city north/south panel
+              </p>
+              <p class="work-meta">
+                <span>Sharp RD at 33°N</span><span>Chinese Thermal Comfort Dataset</span><span>rdrobust · R · WLS with city fixed effects</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/papers/huai_river_rd.pdf">Paper</a>
+                <span class="link-aside">Contributed analysis; acknowledged in the published version with Ruiji Sun</span>
+              </p>
+            </li>
 
-        <div class="project-grid">
-          <article class="project-card reveal" data-category="research policy engineering">
-            <h3>Debt Attitudes and Household Borrowing Behavior (SCF 2010, 2016, 2022)</h3>
-            <p>
-              Full pipeline project linking SCF raw files to final report output with automated
-              cleaning, notebook execution, figure generation, and Quarto PDF rendering.
-            </p>
-            <ul class="impact-list">
-              <li>README-defined one-command workflow (`bash make.sh`) for reproducible execution.</li>
-              <li>Inflation adjustment to 2022 USD and SCF survey-weighted estimates.</li>
-            </ul>
-            <div class="chip-row">
-              <span>Python</span>
-              <span>Jupyter</span>
-              <span>Quarto</span>
-              <span>Household Finance</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/finance_sample_report.pdf">Write-up</a>
-              <a class="card-link" href="https://github.com/minjaeSeo6603/Finance_Sample" target="_blank" rel="noreferrer">Code</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>Which Groups Benefited Most from the 2006 Massachusetts Health Care Reform?</h4>
+              <p class="work-desc">
+                A difference-in-differences event study of the 2006 Massachusetts reform using CPS
+                microdata with New England states as controls, reading heterogeneity by income and
+                age rather than reporting a single average.
+              </p>
+              <p class="work-result">
+                <span class="result-figure">≈5 p.p.</span> fall in uninsurance · N = 180,839 person-years ·
+                larger gains for low-income and younger adults
+              </p>
+              <p class="work-meta">
+                <span>Event-study DiD</span><span>CPS microdata, 2001&ndash;2013</span><span>Subgroup heterogeneity</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/econometricsgame_ma_reform.pdf">Write-up</a>
+                <a href="https://github.com/minjaeSeo6603/WritingSample" rel="noreferrer">Code</a>
+              </p>
+            </li>
 
-          <article class="project-card reveal" data-category="research policy">
-            <h3>Massachusetts Health Care Reform Event Study (2001-2013)</h3>
-            <p>
-              Difference-in-differences event study on heterogeneous treatment effects of the 2006
-              MA reform using CPS microdata and New England controls.
-            </p>
-            <ul class="impact-list">
-              <li>README reports N = 180,839 person-year observations and a ~5 p.p. uninsurance drop.</li>
-              <li>Documented larger gains for low-income and younger adult subgroups.</li>
-            </ul>
-            <div class="chip-row">
-              <span>Event Study DiD</span>
-              <span>Health Policy</span>
-              <span>CPS</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/econometricsgame_ma_reform.pdf">Write-up</a>
-              <a class="card-link" href="https://github.com/minjaeSeo6603/WritingSample" target="_blank" rel="noreferrer">Code</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>
+                The Effect of the Affordable Care Act on Educational Outcomes among Lower-Income
+                Adults, 2003&ndash;2018
+              </h4>
+              <p class="work-desc">
+                Undergraduate thesis estimating whether Medicaid eligibility under the ACA moved
+                educational attainment for lower-income adults, comparing expansion and
+                non-expansion states under a difference-in-differences instrumental-variable design.
+                The write-up is candid that unobserved confounders moving alongside the expansion
+                limit how far the estimates can be pushed.
+              </p>
+              <p class="work-meta">
+                <span>DiD-IV (DDIV)</span><span>State expansion status, 2003&ndash;2018</span><span>ECON 191, UC Berkeley</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/papers/aca_medicaid_education.pdf">Thesis</a>
+              </p>
+            </li>
 
-          <article class="project-card reveal" data-category="research policy engineering">
-            <h3>The Impact of Advertising Campaigns on Vaccine Uptake and Hesitancy</h3>
-            <p>
-              R/Quarto simulation study of a three-arm randomized campaign design comparing
-              reason-based, emotion-based, and control messaging strategies.
-            </p>
-            <ul class="impact-list">
-              <li>Designed a 5,000-participant RCT simulation with 1:1:1 randomization and 10% attrition.</li>
-              <li>Estimated uptake and attitude effects using logistic regression, ANOVA, and treatment-by-education interactions.</li>
-            </ul>
-            <div class="chip-row">
-              <span>RCT Simulation</span>
-              <span>Logit + ANOVA</span>
-              <span>CATE by Education</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/r_project_writeup.pdf">Write-up</a>
-              <a class="card-link" href="https://github.com/minjaeSeo6603/Samplecode" target="_blank" rel="noreferrer">Code</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>Group Therapy and Depression in Rural Ghana</h4>
+              <p class="work-desc">
+                Analysis of a randomized controlled trial testing whether group therapy sessions
+                reduce depression, with treatment-effect heterogeneity by gender treated as a primary
+                question rather than an appendix.
+              </p>
+              <p class="work-result">
+                <span class="result-figure">&minus;0.54</span> points on the Kessler-10 · p = 0.001 ·
+                concentrated among women
+              </p>
+              <p class="work-meta">
+                <span>RCT</span><span>Stata</span><span>Mental health policy</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/rct_ghana_group_therapy.pdf">Write-up</a>
+                <a href="https://github.com/minjaeSeo6603/RCT" rel="noreferrer">Code</a>
+              </p>
+            </li>
 
-          <article class="project-card reveal" data-category="research policy engineering">
-            <h3>Group Therapy and Depression in Rural Ghana (Randomized Controlled Trial)</h3>
-            <p>
-              Stata-based RCT analysis evaluating whether group therapy reduces depression, with
-              explicit heterogeneous treatment-effect analysis by gender.
-            </p>
-            <ul class="impact-list">
-              <li>README reports an average treatment effect of -0.54 points on Kessler-10 (p = 0.001).</li>
-              <li>Large and significant gains for women, with limited treatment response for men.</li>
-            </ul>
-            <div class="chip-row">
-              <span>RCT</span>
-              <span>Stata</span>
-              <span>Mental Health Policy</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/rct_ghana_group_therapy.pdf">Write-up</a>
-              <a class="card-link" href="https://github.com/minjaeSeo6603/RCT" target="_blank" rel="noreferrer">Code</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>Investigating the Allocation of Hill-Burton Funding Across States</h4>
+              <p class="work-desc">
+                Did the statutory Hill-Burton formula actually predict where hospital construction
+                money went? A 48-state panel tests the formula against realized allocations and
+                examines whether the statutory caps bound in practice.
+              </p>
+              <p class="work-result">
+                Formula strongly predictive · lower cap binding · upper cap non-binding · 48 states, 1947&ndash;1964
+              </p>
+              <p class="work-meta">
+                <span>Panel fixed effects</span><span>State-year allocations</span><span>Stata</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/stata_project_writeup.pdf">Write-up</a>
+                <a href="assets/code/stata_project_analysis.do">Do-file</a>
+                <a href="assets/docs/stata_project_reference.pdf">Reference</a>
+              </p>
+            </li>
 
-          <article class="project-card reveal" data-category="research policy engineering">
-            <h3>Investigating the Allocation of Hill-Burton Funding Across States</h3>
-            <p>
-              State-year panel analysis testing whether the statutory Hill-Burton allocation formula
-              predicted realized funding allocations across states.
-            </p>
-            <ul class="impact-list">
-              <li>Built a 48-state panel (1947-1964) and estimated fixed-effects specifications in Stata.</li>
-              <li>Documented strong formula predictiveness, a binding lower cap, and a non-binding upper cap.</li>
-            </ul>
-            <div class="chip-row">
-              <span>Stata</span>
-              <span>Panel FE</span>
-              <span>Allocation Formula</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/stata_project_writeup.pdf">Write-up</a>
-              <a class="card-link" href="assets/code/stata_project_analysis.do">Code</a>
-              <a class="card-link" href="assets/docs/stata_project_reference.pdf">Reference</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>Advertising Campaigns, Vaccine Uptake, and Hesitancy</h4>
+              <p class="work-desc">
+                A design-stage simulation of a three-arm randomized messaging campaign &mdash;
+                reason-based, emotion-based, and control &mdash; used to check power and estimator
+                behavior before any field deployment.
+              </p>
+              <p class="work-result">
+                5,000 participants · 1:1:1 randomization · 10% attrition · logit, ANOVA, and
+                treatment &times; education interactions
+              </p>
+              <p class="work-meta">
+                <span>RCT simulation</span><span>R · Quarto</span><span>Conditional effects by education</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/r_project_writeup.pdf">Write-up</a>
+                <a href="https://github.com/minjaeSeo6603/Samplecode" rel="noreferrer">Code</a>
+              </p>
+            </li>
+          </ol>
 
-          <article class="project-card reveal" data-category="research engineering">
-            <h3>Adaptive DML for Continuous Treatments</h3>
-            <p>
-              Simulation-driven methodology project for adaptive second-stage model tuning under
-              unknown treatment-response function shape.
-            </p>
-            <ul class="impact-list">
-              <li>Compared CV- and IC-based tuning and analyzed misspecification bias risk.</li>
-              <li>Developed a practical pipeline for robust inference under model uncertainty.</li>
-            </ul>
-            <div class="chip-row">
-              <span>Causal ML</span>
-              <span>Simulation</span>
-              <span>Inference</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/adaptive_dml_report.pdf">Write-up</a>
-            </div>
-          </article>
+          <!-- Group B -->
+          <h3 class="group-head">Household finance &amp; markets</h3>
+          <ol class="works">
+            <li class="work">
+              <h4>Attitudes Toward Debt and Household Borrowing Behavior, SCF 2010&ndash;2022</h4>
+              <p class="work-desc">
+                Do stated attitudes toward debt carry information about how much households actually
+                borrow? Repeated cross-sections from the Survey of Consumer Finances, survey-weighted
+                and inflation-adjusted, show attitudes shifting toward debt acceptance and that shift
+                surviving controls for income, age, education, wealth, and existing debt burden. The
+                analysis is explicitly associational and says so.
+              </p>
+              <p class="work-result">
+                &ldquo;Debt is a good idea&rdquo; share <span class="result-figure">21.9% → 26.5%</span> ·
+                least-to-most favorable attitude associated with
+                <span class="result-figure">+$24,232</span> in debt (2022 dollars)
+              </p>
+              <p class="work-meta">
+                <span>Survey-weighted regression</span><span>SCF 2010, 2016, 2022</span><span>Python · Quarto · one-command pipeline</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/seo_writing_sample_2026.pdf">Writing sample</a>
+                <a href="https://github.com/minjaeSeo6603/Finance_Sample" rel="noreferrer">Code</a>
+              </p>
+            </li>
 
-          <article class="project-card reveal" data-category="research engineering">
-            <h3>Inherited Trust and Economic Development</h3>
-            <p>
-              Current writing sample on intergenerational trust and economic development, implemented
-              end-to-end in a transparent and reproducible R/Quarto workflow.
-            </p>
-            <ul class="impact-list">
-              <li>Combines micro-level inherited trust estimation and macro-level growth analysis in one coherent pipeline.</li>
-              <li>Produces publication-ready tables and figures with both quick-check and full-run execution modes.</li>
-            </ul>
-            <div class="chip-row">
-              <span>Current Writing Sample</span>
-              <span>Reference Study</span>
-              <span>R / Quarto</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/inherited_trust_analysis.pdf">Write-up</a>
-              <a class="card-link" href="assets/code/inherited_trust_analysis.qmd">Code</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>Right to Repair, Trade-Ins, and Durable-Goods Markets</h4>
+              <p class="work-desc">
+                URAP research on Massachusetts' Right to Repair law, using household expenditure data
+                and a difference-in-differences design against all other states. Vehicle service and
+                parts spending rose in the year of passage and then trended down &mdash; the decline
+                traced to falling repair costs as third-party shops entered the market.
+              </p>
+              <p class="work-meta">
+                <span>DiD · synthetic control</span><span>Consumer Expenditure Survey</span><span>UC Berkeley URAP</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/visualization_analysis_minjae_seo.pdf">Report</a>
+                <a href="assets/docs/rtr_business_writing_sample.pdf">Policy write-up</a>
+                <a href="assets/docs/rtr_urap_short_report.ipynb">Notebook</a>
+              </p>
+            </li>
 
-          <article class="project-card reveal" data-category="research">
-            <h3>Right to Repair, Trade-Ins, and Durable Goods Market Analysis</h3>
-            <p>
-              Policy-focused write-up on right-to-repair and trade-in mechanisms in durable goods
-              markets, centered on interpretation and implications.
-            </p>
-            <ul class="impact-list">
-              <li>Summarizes Massachusetts right-to-repair dynamics and market responses in a clear policy narrative.</li>
-              <li>Highlights trade-in behavior and durable-goods market incentives for business and policy audiences.</li>
-            </ul>
-            <div class="chip-row">
-              <span>Write-up</span>
-              <span>Policy Evaluation</span>
-              <span>Market Design</span>
-              <span>Trade-Ins</span>
-            </div>
-            <div class="card-links">
-              <a class="card-link" href="assets/docs/rtr_business_writing_sample.pdf">Write-up</a>
-            </div>
-          </article>
+            <li class="work">
+              <h4>Credit Valuation Case Study: Default Risk in a Corporate Bond</h4>
+              <p class="work-desc">
+                Pricing and risk decomposition for a five-year unsecured corporate bond with a 6%
+                coupon against a flat 4% Treasury curve and a 5% conditional annual default
+                probability, with Monte Carlo simulation and sensitivity analysis over hazard and
+                recovery rates.
+              </p>
+              <p class="work-meta">
+                <span>Monte Carlo · hazard-rate model</span><span>Spread surface · recovery sensitivity</span><span>Python · Quarto</span>
+              </p>
+              <p class="work-links">
+                <a href="https://github.com/minjaeSeo6603/FICC" rel="noreferrer">Analysis &amp; report</a>
+              </p>
+            </li>
+          </ol>
 
-        </div>
-      </section>
+          <!-- Group C -->
+          <h3 class="group-head">Methods, replication &amp; research software</h3>
+          <ol class="works">
+            <li class="work">
+              <h4>Adaptive Estimation for Nonparametric Treatments in Double Machine Learning</h4>
+              <p class="work-desc">
+                Standard double machine learning asks the researcher to specify how a continuous
+                treatment maps to the outcome. This paper removes that requirement: it selects the
+                second-stage mapping adaptively from a sieve space via generalized cross-validation,
+                establishes the asymptotic properties of the resulting estimator, and demonstrates
+                consistency through Monte Carlo simulation &mdash; keeping valid inference while
+                eliminating a researcher degree of freedom.
+              </p>
+              <p class="work-meta">
+                <span>Double/debiased ML · sieve estimation</span><span>Adaptive cross-validation · post-selection inference</span><span>Monte Carlo</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/adaptive_dml_report.pdf">Technical report</a>
+                <a href="assets/code/adaptive_dml_simulation_setup.py">Simulation code</a>
+              </p>
+            </li>
 
-      <section id="workflow" class="section reveal">
-        <div class="section-head">
-          <h2>How I Work</h2>
-          <p>
-            My workflow is consistent across data science and visualization projects: define the
-            decision question, build an auditable pipeline, stress-test results, and ship clear
-            outputs that others can reproduce.
+            <li class="work">
+              <h4>Inherited Trust and Economic Development &mdash; Replication</h4>
+              <p class="work-desc">
+                A full replication package linking micro-level inherited-trust estimation to
+                macro-level growth analysis in a single reproducible R and Quarto workflow, with
+                quick-check and full-run execution modes so a reviewer can verify a claim without
+                rerunning everything.
+              </p>
+              <p class="work-result">
+                35+ model specifications · 15 tables · 10 figures produced in one pass
+              </p>
+              <p class="work-meta">
+                <span>Replication</span><span>R · Quarto · Stata</span><span>Development &amp; growth</span>
+              </p>
+              <p class="work-links">
+                <a href="assets/docs/inherited_trust_analysis.pdf">Write-up</a>
+                <a href="assets/docs/inherited_trust_replication.pdf">Replication reference</a>
+                <a href="assets/code/inherited_trust_analysis.qmd">Source</a>
+              </p>
+            </li>
+
+            <li class="work">
+              <h4>Reproducible Economics Research Agent</h4>
+              <p class="work-desc">
+                A pipeline for drafting an empirical paper with a local AI assistant that cannot
+                invent results. Each of six stages is followed by a plain Python check that halts the
+                run on a fabricated citation, an invented coefficient, or a silently broken merge, and
+                two judgment calls are reserved for a human. Every number in the output traces back to
+                a saved file.
+              </p>
+              <p class="work-meta">
+                <span>Research tooling</span><span>Python · verification gates</span><span>Documented walkthrough</span>
+              </p>
+              <p class="work-links">
+                <a href="https://github.com/minjaeSeo6603/economics-research-agent" rel="noreferrer">Repository</a>
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ─────────────── 03 · EXPERIENCE ─────────────── -->
+        <section id="experience" class="section">
+          <h2 class="section-head">
+            <span class="section-num">03</span>
+            <span class="section-title">Research experience</span>
+            <span class="section-rule" aria-hidden="true"></span>
+            <span class="section-count">Six</span>
+          </h2>
+
+          <ol class="positions">
+            <li class="position">
+              <p class="position-when">Jun&ndash;Aug 2026</p>
+              <div class="position-body">
+                <h3>Research Analyst Intern</h3>
+                <p class="position-where">World Bank &middot; Washington, DC</p>
+                <p>
+                  Synthesizing evidence on tax compliance and behavioral policy to inform
+                  development-project design and recommendations for raising tax revenue in
+                  developing countries. Analyzing qualitative and quantitative data with econometric
+                  and machine-learning methods, and producing visualizations and policy briefs for
+                  internal and external stakeholders.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Jan 2026&ndash;present</p>
+              <div class="position-body">
+                <h3>Research Assistant</h3>
+                <p class="position-where">Booth School of Business, University of Chicago &middot; Prof. Anthony Le</p>
+                <p>
+                  Built a Stata pipeline that turns 899 Excel files and 448,119 citation rows from the
+                  Accountants' Index (1920&ndash;2000) into a ranked database of 14,500 journals, with
+                  fuzzy name normalization and three-pass quality control cross-validated against a
+                  parallel Python build. Extracted the Revelio COSMOS U.S. job-postings dataset
+                  (2.38&nbsp;billion rows, 4.90&nbsp;TiB) on WRDS Cloud using chunked state-by-year SQL
+                  queries with automated resume.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Sep 2025&ndash;May 2026</p>
+              <div class="position-body">
+                <h3>Research Assistant</h3>
+                <p class="position-where">University of Chicago</p>
+                <p>
+                  Estimated the wage gap between two-to-four-year transfer students and direct-entry
+                  BA holders in the NLSY97 using OLS and inverse-propensity weighting, and showed that
+                  a previously reported non-cognitive control effect was a sample-composition
+                  artifact. Work is written up as
+                  <em>Channels of Negative Earnings for Community-College Transfer Students</em>.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Jan 2024&ndash;Feb 2025</p>
+              <div class="position-body">
+                <h3>Research Assistant</h3>
+                <p class="position-where">University of California, Berkeley</p>
+                <p>
+                  Assembled a 32-city north/south panel from the Chinese Thermal Comfort Dataset for a
+                  sharp regression discontinuity at the 33°N heating-policy boundary, and estimated the
+                  effect of district heating on indoor temperature using weighted least squares with
+                  city fixed effects and polynomial trends. Separately analyzed household expenditure
+                  under a difference-in-differences and synthetic-control framework to evaluate
+                  Massachusetts' Right to Repair law.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Mar&ndash;May 2025</p>
+              <div class="position-body">
+                <h3>AI Intern</h3>
+                <p class="position-where">YCX &middot; Remote</p>
+                <p>
+                  Built and deployed a Know-Your-Business compliance system using multi-agent
+                  orchestration, LLM integration, and targeted web scraping, automating regulatory due
+                  diligence in production. Extended firm-level coverage to 300+ entities, a 40%
+                  increase, through a modular pipeline combining open-web sources, corporate filings,
+                  and structured model output.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Jul 2024&ndash;Mar 2025</p>
+              <div class="position-body">
+                <h3>Quantitative Research Intern</h3>
+                <p class="position-where">Global Key Advisors &middot; Hybrid</p>
+                <p>
+                  Merged SEC Form 4, CRSP, and Refinitiv data across the Fama&ndash;French 48
+                  industries and built reusable extraction and ROI-tracking pipelines feeding the
+                  team's backtests. Constructed event-time abnormal-return signals around
+                  insider-trading filings to test whether disclosure rules left exploitable alpha,
+                  benchmarked against Fama&ndash;French factors.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ─────────────── 04 · TEACHING ─────────────── -->
+        <section id="teaching" class="section">
+          <h2 class="section-head">
+            <span class="section-num">04</span>
+            <span class="section-title">Teaching &amp; service</span>
+            <span class="section-rule" aria-hidden="true"></span>
+            <span class="section-count">Three</span>
+          </h2>
+
+          <ol class="positions">
+            <li class="position">
+              <p class="position-when">Sep&ndash;Dec 2025</p>
+              <div class="position-body">
+                <h3>Graduate Teaching Assistant, Mathematical Foundations of Machine Learning</h3>
+                <p class="position-where">University of Chicago</p>
+                <p>
+                  Taught weekly recitations for 20+ master's students with Python and NumPy
+                  demonstrations of the singular value decomposition, Gram&ndash;Schmidt, and least
+                  squares, and resolved 50+ technical questions on Ed Discussion.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Jan 2024&ndash;Mar 2025</p>
+              <div class="position-body">
+                <h3>Head of Research, Undergraduate Economics Association</h3>
+                <p class="position-where">University of California, Berkeley</p>
+                <p>
+                  Led biweekly research workshops for 30+ undergraduates covering OLS, IV,
+                  difference-in-differences, and regression discontinuity in R and Stata, and mentored
+                  semester-long projects from identification through write-up.
+                </p>
+              </div>
+            </li>
+
+            <li class="position">
+              <p class="position-when">Mar 2024</p>
+              <div class="position-body">
+                <h3>Competitor, Econometrics Game</h3>
+                <p class="position-where">University of Chicago</p>
+                <p>
+                  Selected as one of a four-person team &mdash; with two LSE students and one from UC
+                  Berkeley &mdash; for a 48-hour empirical research competition, presenting to a panel
+                  that included a Nobel Laureate in Economics.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ─────────────── 05 · METHODS ─────────────── -->
+        <section id="methods" class="section">
+          <h2 class="section-head">
+            <span class="section-num">05</span>
+            <span class="section-title">Methods &amp; tools</span>
+            <span class="section-rule" aria-hidden="true"></span>
+          </h2>
+
+          <dl class="toolkit">
+            <div>
+              <dt>Identification</dt>
+              <dd>
+                Difference-in-differences and triple difference · regression discontinuity ·
+                instrumental variables · synthetic control · panel and fixed-effects models ·
+                partial identification and bounds · randomized trials
+              </dd>
+            </div>
+            <div>
+              <dt>Causal machine learning</dt>
+              <dd>
+                Double/debiased machine learning · sieve and nonparametric estimation ·
+                propensity-score matching, IPW, and AIPW · mediation analysis (Baron&ndash;Kenny,
+                ACME) · Monte Carlo simulation design
+              </dd>
+            </div>
+            <div>
+              <dt>Programming</dt>
+              <dd>Python · R · Stata · SQL · C · MATLAB · SAS</dd>
+            </div>
+            <div>
+              <dt>Data engineering</dt>
+              <dd>
+                Chunked SQL and ETL at billion-row scale · WRDS Cloud · AWS · pandas and NumPy ·
+                Git · Quarto · Tableau and Power BI
+              </dd>
+            </div>
+            <div>
+              <dt>Coursework</dt>
+              <dd>
+                PhD Applied Econometrics I&ndash;III · PhD Advanced Microeconomics I&ndash;II · PhD
+                Game Theory · Analysis in ℝⁿ · Modern Statistical Prediction &amp; Machine Learning ·
+                Causal Inference
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- ─────────────── 06 · CONTACT ─────────────── -->
+        <section id="contact" class="section section-last">
+          <h2 class="section-head">
+            <span class="section-num">06</span>
+            <span class="section-title">Contact</span>
+            <span class="section-rule" aria-hidden="true"></span>
+          </h2>
+
+          <p class="contact-lede">
+            I am glad to hear from researchers working on related questions, and from anyone who
+            wants a draft, a replication package, or the code behind a result on this page.
           </p>
-        </div>
-        <div class="workflow-grid">
-          <article class="workflow-step reveal">
-            <p class="step-number">01</p>
-            <h3>Define Decision-Ready Questions</h3>
-            <p>Translate each project prompt into estimands, outcome definitions, and evaluation criteria before modeling.</p>
-          </article>
-          <article class="workflow-step reveal">
-            <p class="step-number">02</p>
-            <h3>Build an Auditable Data Layer</h3>
-            <p>Validate raw sources, document cleaning logic, and produce analysis-ready datasets with deterministic scripts.</p>
-          </article>
-          <article class="workflow-step reveal">
-            <p class="step-number">03</p>
-            <h3>Estimate and Stress-Test Models</h3>
-            <p>Run baseline estimators and robustness checks (DiD, FE, RCT, DML, panel methods) to assess identification risk.</p>
-          </article>
-          <article class="workflow-step reveal">
-            <p class="step-number">04</p>
-            <h3>Visualize for Interpretation</h3>
-            <p>Convert model outputs into publication-ready figures, effect summaries, and concise narratives for non-technical readers.</p>
-          </article>
-          <article class="workflow-step reveal">
-            <p class="step-number">05</p>
-            <h3>Package Reproducible Deliverables</h3>
-            <p>Ship write-up, code, and artifacts in rerunnable structures so reviewers can reproduce results end-to-end.</p>
-          </article>
-        </div>
-      </section>
 
-      <section id="contact" class="section reveal">
-        <div class="section-head">
-          <h2>Contact</h2>
-        </div>
-        <p>
-          I am open to full-time opportunities in data science, quantitative research, machine
-          learning research, and AI engineering.
-        </p>
-        <div class="contact-grid">
-          <a href="mailto:minjaeseo@uchicago.edu">minjaeseo@uchicago.edu</a>
-          <a href="mailto:minjaecollege123@gmail.com">minjaecollege123@gmail.com</a>
-          <a class="contact-logo contact-linkedin" href="https://www.linkedin.com/in/minjae-seo-6915b31b5/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.71-.521-1.248-1.342-1.248-.821 0-1.359.538-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.879 1.232-.879.869 0 1.216.663 1.216 1.634v3.866h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169H6.249c.03.678 0 7.225 0 7.225h2.401z" />
-            </svg>
-            <span class="sr-only">LinkedIn</span>
-          </a>
-          <a class="contact-logo contact-github" href="https://github.com/minjaeseo6603" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4.01 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-            </svg>
-            <span class="sr-only">GitHub</span>
-          </a>
-        </div>
-      </section>
-    </main>
+          <ul class="contact-list">
+            <li>
+              <span class="contact-key">Email</span>
+              <a href="mailto:minjaeseo@uchicago.edu">minjaeseo@uchicago.edu</a>
+            </li>
+            <li>
+              <span class="contact-key">Alternate</span>
+              <a href="mailto:ppori34@berkeley.edu">ppori34@berkeley.edu</a>
+            </li>
+            <li>
+              <span class="contact-key">Code</span>
+              <a href="https://github.com/minjaeseo6603" rel="noreferrer">github.com/minjaeseo6603</a>
+            </li>
+            <li>
+              <span class="contact-key">Profile</span>
+              <a href="https://www.linkedin.com/in/minjae-seo-6915b31b5/" rel="noreferrer">LinkedIn</a>
+            </li>
+            <li>
+              <span class="contact-key">CV</span>
+              <a href="assets/docs/Seo_Minjae_CV.pdf">Curriculum vitae (PDF)</a>
+            </li>
+          </ul>
+        </section>
 
-    <footer class="site-footer">
-      <p>Minjae Seo | Research and Data Portfolio | <span id="last-updated"></span></p>
-    </footer>
+        <footer class="site-footer">
+          <p>Minjae Seo &middot; University of Chicago &middot; Last updated August 2026</p>
+        </footer>
+      </main>
+    </div>
 
     <script src="script.js"></script>
   </body>
