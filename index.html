@@ -97,7 +97,7 @@
           <dl class="standing">
             <div>
               <dt>Currently</dt>
-              <dd>Research Assistant, Chicago Booth &mdash; Prof. Anthony Le</dd>
+              <dd>Research Assistant, Chicago Booth</dd>
             </div>
             <div>
               <dt>Summer 2026</dt>
@@ -311,14 +311,25 @@
               the 90th), and the regional ordering runs Capital Region &gt; Metropolitan &gt; Province.
             </p>
 
+            <p class="paper-note">
+              <strong>Step 2</strong> asks why those regional gradients exist and how regional private
+              education markets and CSAT competition sustain them. Subtracting initial log income from
+              both sides of the IGE equation yields a growth-rate form algebraically equivalent to the
+              cross-regional regression of Durlauf, Kourtellos and Minkin (2001); their
+              varying-coefficient strategy is adopted with regional average CSAT scores as the
+              smoothing variable. Inference uses wild cluster bootstrap throughout, given only
+              J&nbsp;=&nbsp;12&ndash;17 regional clusters.
+            </p>
+
             <dl class="paper-meta">
-              <div><dt>Design</dt><dd>IGE · rank&ndash;rank · quantile regression</dd></div>
+              <div><dt>Design</dt><dd>IGE · rank&ndash;rank · quantile regression · varying-coefficient IGE</dd></div>
               <div><dt>Data</dt><dd>KLIPS waves 1&ndash;27 (1998&ndash;2024) · N = 5,388</dd></div>
-              <div><dt>Stage</dt><dd>Step 1 of a multi-stage project</dd></div>
+              <div><dt>Inference</dt><dd>Wild cluster bootstrap (Cameron, Gelbach &amp; Miller 2008)</dd></div>
             </dl>
 
             <p class="paper-links">
-              <a class="link-primary" href="assets/papers/korea_income_mobility.pdf">Read the paper</a>
+              <a class="link-primary" href="assets/papers/korea_income_mobility.pdf">Step 1 &mdash; long-run trends</a>
+              <a class="link-primary" href="assets/papers/korea_income_mobility_step2.pdf">Step 2 &mdash; regional heterogeneity</a>
             </p>
           </article>
 
@@ -454,7 +465,6 @@
               <p class="work-links">
                 <a href="assets/docs/stata_project_writeup.pdf">Write-up</a>
                 <a href="assets/code/stata_project_analysis.do">Do-file</a>
-                <a href="assets/docs/stata_project_reference.pdf">Reference</a>
               </p>
             </li>
 
@@ -578,7 +588,6 @@
               </p>
               <p class="work-links">
                 <a href="assets/docs/inherited_trust_analysis.pdf">Write-up</a>
-                <a href="assets/docs/inherited_trust_replication.pdf">Replication reference</a>
                 <a href="assets/code/inherited_trust_analysis.qmd">Source</a>
               </p>
             </li>
@@ -631,7 +640,7 @@
               <p class="position-when">Jan 2026&ndash;present</p>
               <div class="position-body">
                 <h3>Research Assistant</h3>
-                <p class="position-where">Booth School of Business, University of Chicago &middot; Prof. Anthony Le</p>
+                <p class="position-where">Booth School of Business, University of Chicago</p>
                 <p>
                   Built a Stata pipeline that turns 899 Excel files and 448,119 citation rows from the
                   Accountants' Index (1920&ndash;2000) into a ranked database of 14,500 journals, with
