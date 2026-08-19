@@ -966,6 +966,15 @@ ul {
   border-bottom: 1px solid var(--rule);
 }
 
+.work-when {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  margin-bottom: 0.34rem;
+}
+
 .work h4 {
   max-width: 46ch;
   font-size: 1.16rem;
